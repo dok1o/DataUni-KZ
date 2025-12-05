@@ -1,4 +1,4 @@
-onst express = require("express");
+const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const { Configuration, OpenAIApi } = require("openai");
@@ -27,4 +27,5 @@ app.post("/api/generate", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
