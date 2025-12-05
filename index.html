@@ -741,8 +741,7 @@
   }
   ];
 
-  function initApp(){
-  const grid = document.getElementById('grid');
+   const grid = document.getElementById('grid');
   const search = document.getElementById('search');
   const cityFilter = document.getElementById('cityFilter');
   const grantFilter = document.getElementById('grantFilter');
@@ -763,14 +762,6 @@
     cityFilter.appendChild(o);
   });
 
-  // Заполняем селекты сравнения
-  const compareA = document.getElementById('compareA');
-  const compareB = document.getElementById('compareB');
-  universities.forEach(u=>{
-    const a=document.createElement('option'); a.value=u.id; a.textContent = u.name + ' — ' + u.city; compareA.appendChild(a);
-    const b=document.createElement('option'); b.value=u.id; b.textContent = u.name + ' — ' + u.city; compareB.appendChild(b);
-  });
-
   function renderGrid(list){
     grid.innerHTML='';
     if(list.length===0){
@@ -786,7 +777,7 @@
         <div class="meta">${u.city} · <span class="pill">Программ: ${u.programs.length}</span></div>
         <div style="margin-top:8px;color:#64748b;font-size:13px">${u.desc}</div>
         <div style="margin-top:8px;font-size:13px">
-          <strong>Стоимость: </strong>от ${u.cost.toLocaleString()} тг/год<br>
+          <strong>Стоимость: </strong>${u.cost.toLocaleString()} тг/год<br>
           <strong>Гранты: </strong>${u.grant ? 'Есть' : 'Нет'}
         </div>
       `;
@@ -831,9 +822,9 @@
   function renderAbout(u){
     tabContent.innerHTML = `
       <div style="font-size:14px;color:#64748b">${u.desc}</div>
-      <div class="section"><strong>Контакты</strong><div style="color:#64748b;margin-top:6px">Город: ${u.city}<br>Телефон: ${u.phone || '+7 (727) 000-00-00'}<br>Email: info@${u.name.replace(/[^a-z0-9]/gi,'').toLowerCase()}.edu.kz</div></div>
+      <div class="section"><strong>Контакты</strong><div style="color:#64748b;margin-top:6px">Город: ${u.city}<br>Телефон: +7 (727) 000-00-00<br>Email: info@${u.name.replace(/[^a-z0-9]/gi,'').toLowerCase()}.edu.kz</div></div>
       <div class="section"><strong>Координаты</strong><div style="color:#64748b;margin-top:6px">lat: ${u.coords.lat}, lng: ${u.coords.lng}</div></div>
-      <div class="section"><strong>Стоимость обучения</strong><div style="color:#64748b;margin-top:6px">от ${u.cost.toLocaleString()} тг/год</div></div>
+      <div class="section"><strong>Стоимость обучения</strong><div style="color:#64748b;margin-top:6px">${u.cost.toLocaleString()} тг/год</div></div>
       <div class="section"><strong>Гранты</strong><div style="color:#64748b;margin-top:6px">${u.grant ? 'Доступны гранты' : 'Гранты не предоставляются'}</div></div>
     `;
   }
@@ -875,16 +866,22 @@
     const costVal = costFilter.value;
 
     let list = universities.filter(u=>{
+      // Поиск по названию и городу
       if(q && !(u.name.toLowerCase().includes(q) || u.city.toLowerCase().includes(q))) return false;
+
       if(city && u.city !== city) return false;
+
       if(grantVal === 'yes' && !u.grant) return false;
       if(grantVal === 'no' && u.grant) return false;
+
       if(costVal === 'low' && u.cost > 300000) return false;
       if(costVal === 'mid' && (u.cost < 300000 || u.cost > 600000)) return false;
       if(costVal === 'high' && u.cost <= 600000) return false;
+
       return true;
     });
 
+    // Сортировка
     if(sort.value === 'name') {
       list.sort((a,b)=>a.name.localeCompare(b.name));
     } else if(sort.value === 'city') {
@@ -896,31 +893,6 @@
     renderGrid(list);
   }
 
-  // Comparison UI
-  const comparisonEl = document.getElementById('comparison');
-  const swapBtn = document.getElementById('swapCompare');
-  function renderCompare(a,b){
-    if(!a && !b){ comparisonEl.innerHTML = '<div style="color:#64748b">Выберите два университета для сравнения.</div>'; return; }
-    const left = a ? `<div class="compare-col"><h4>${a.name}</h4><div class="compare-row"><strong>Город:</strong> ${a.city}</div><div class="compare-row"><strong>Наличие гранта:</strong> ${a.grant ? 'Да' : 'Нет'}</div><div class="compare-row"><strong>Стоимость:</strong> от ${a.cost.toLocaleString()} тг/год</div><div class="compare-row"><strong>Телефон:</strong> <a href="tel:${a.phone}">${a.phone || '—'}</a></div><div class="compare-row"><strong>Координаты:</strong> ${a.coords.lat}, ${a.coords.lng}</div></div>` : `<div class="compare-col">—</div>`;
-    const right = b ? `<div class="compare-col"><h4>${b.name}</h4><div class="compare-row"><strong>Город:</strong> ${b.city}</div><div class="compare-row"><strong>Наличие гранта:</strong> ${b.grant ? 'Да' : 'Нет'}</div><div class="compare-row"><strong>Стоимость:</strong> от ${b.cost.toLocaleString()} тг/год</div><div class="compare-row"><strong>Телефон:</strong> <a href="tel:${b.phone}">${b.phone || '—'}</a></div><div class="compare-row"><strong>Координаты:</strong> ${b.coords.lat}, ${b.coords.lng}</div></div>` : `<div class="compare-col">—</div>`;
-    comparisonEl.innerHTML = left + right;
-  }
-
-  function updateCompare(){
-    const aId = +document.getElementById('compareA').value;
-    const bId = +document.getElementById('compareB').value;
-    const a = universities.find(u=>u.id===aId);
-    const b = universities.find(u=>u.id===bId);
-    renderCompare(a,b);
-  }
-  document.getElementById('compareA').addEventListener('change', updateCompare);
-  document.getElementById('compareB').addEventListener('change', updateCompare);
-  swapBtn.addEventListener('click', ()=>{
-    const a = document.getElementById('compareA');
-    const b = document.getElementById('compareB');
-    const tmp = a.value; a.value = b.value; b.value = tmp; updateCompare();
-  });
-
   // Навешиваем обработчики на фильтры и поиск
   [search, cityFilter, grantFilter, costFilter, sort].forEach(el=>{
     el.addEventListener('input', applyFilters);
@@ -928,14 +900,6 @@
 
   // Изначальный рендер всего списка
   renderGrid(universities);
-  updateCompare();
-}
-
-// Загружаем данные из JSON и стартуем приложение
-fetch('data/universities.json')
-  .then(r=>r.json())
-  .then(data=>{ universities = data; initApp(); })
-  .catch(err=>{ console.error('Failed to load universities.json', err); universities = []; initApp(); });
 
 const chatBot = document.getElementById("chatBot");
 const chatBody = document.getElementById("chatBody");
@@ -1015,6 +979,7 @@ promptInput.addEventListener("keypress", (e) => {
 </script>
 </body>
 </html>
+
 
 
 
