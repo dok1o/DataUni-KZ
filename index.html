@@ -1,594 +1,870 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>DataHub вузов РК — каталог</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Каталог ВУЗов РК — DataHub</title>
 <style>
-  body {
-    margin: 0;
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: #e6f0ff; /* нежно-синий светлый фон */
-    color: #1e293b; /* темно-синий текст */
-  }
-  header {
-    padding: 20px 24px;
-    border-bottom: 1px solid #cbd5e1;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: #d0e2ff;
-  }
-  h1 {
-    margin: 0;
-    font-size: 20px;
-  }
-  .container {
-    max-width: 1100px;
-    margin: 28px auto;
-    padding: 0 16px;
-  }
-  .controls {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 18px;
-  }
-  input[type="search"], select {
-    background: #fff;
-    border: 1px solid #94a3b8;
-    padding: 10px 12px;
-    border-radius: 10px;
-    color: #1e293b;
-    min-width: 120px;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-  }
-  .card {
-    background: #fff; /* белый фон */
-    color: #1e293b;
-    padding: 14px;
-    border-radius: 12px;
-    border: 1px solid #cbd5e1;
-    box-shadow: 0 4px 12px rgba(100, 116, 139, 0.1);
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 30px rgba(100, 116, 139, 0.2);
-  }
-  .card .title {
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .card .meta {
-    font-size: 13px;
-    color: #64748b;
-  }
-  .pill {
-    display: inline-block;
-    padding: 6px 8px;
-    border-radius: 999px;
-    background: #dbeafe;
-    font-size: 12px;
-    color: #1e293b;
-  }
-  .panel {
-    position: fixed;
-    right: 20px;
-    top: 20px;
-    bottom: 20px;
-    width: 520px;
-    max-width: calc(100% - 40px);
-    background: #f9fafb; /* светлый фон панели */
-    border: 1px solid #cbd5e1;
-    border-radius: 12px;
-    overflow: auto;
-    box-shadow: 0 20px 60px rgba(100, 116, 139, 0.3);
-    padding: 18px;
-    display: none;
-    color: #1e293b;
-  }
-  .panel.show {
-    display: block;
-  }
-  .panel header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-  }
-  .tabs {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-  }
-  .tab {
-    padding: 8px 10px;
-    border-radius: 10px;
-    background: #e0e7ff;
-    cursor: pointer;
-    border: 1px solid #a5b4fc;
-    color: #1e293b;
-    user-select: none;
-  }
-  .tab.active {
-    background: #6366f1;
-    border-color: #4338ca;
-    color: #fff;
-  }
-  .section {
-    margin-top: 14px;
-  }
-  .program {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #cbd5e1;
-    margin-bottom: 8px;
-    background: #eef2ff;
-  }
-  .btn {
-    display: inline-block;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background: #6366f1;
-    color: #fff;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  footer {
-    padding: 20px;
-    text-align: center;
-    color: #64748b;
-    font-size: 13px;
-  }
-  @media (max-width: 800px) {
-    .panel {
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: auto;
-      bottom: 0;
-      width: 100%;
-      height: 60vh;
-      border-radius: 12px 12px 0 0;
-    }
-  }
+:root{
+  --bg:#eef4ff; --card:#f7fbff; --accent:#3578ff; --accent2:#2b6fd8;
+  --muted:#7f8fa6; --radius:18px; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:linear-gradient(180deg,var(--bg),#f3f8ff);color:#123;line-height:1.45;}
+header{padding:28px 20px;display:flex;justify-content:space-between;align-items:center;gap:18px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.logo{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;}
+h1{margin:0;font-size:20px;}
+.subtitle{color:var(--muted);font-size:13px;}
+.container{max-width:1150px;margin:18px auto;padding:18px;}
+.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;}
+.panel{border-radius:var(--radius);padding:20px;color:#fff;position:relative;overflow:hidden;}
+.panel h2{margin:0 0 8px;font-size:36px;}
+.p1{background:linear-gradient(180deg,#6fa8ff,#77a6ff);}
+.p2{background:linear-gradient(180deg,#4f82ff,#3a6df5);}
+.p3{background:linear-gradient(180deg,#2d58e8,#1f45cc);}
+.controls{margin:18px 0;display:flex;gap:12px;flex-wrap:wrap;}
+input, select{padding:10px;border-radius:10px;border:1px solid #e0e8ff;font-size:14px;width:100%;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:14px;}
+.card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(15,30,80,0.04);}
+.card h3{margin:0 0 6px;font-size:18px;}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.tag{background:#eef5ff;padding:4px 8px;border-radius:999px;font-size:12px;color:#2357d4;}
+.card-actions{display:flex;gap:8px;align-items:center;}
+.btn{padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:white;cursor:pointer;}
+.btn.ghost{background:transparent;border:1px solid #ddd;color:#123;}
+.compare-checkbox{margin-left:auto;display:flex;align-items:center;gap:6px;color:var(--muted);}
+.modal{position:fixed;inset:0;background:rgba(6,10,30,0.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60;}
+.modal.open{display:flex;}
+.modal-content{width:100%;max-width:1100px;background:white;border-radius:12px;overflow:hidden;}
+.modal-header{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f0f0f6;}
+.modal-body{height:70vh;overflow:auto;}
+iframe.map{width:100%;height:100%;border:0;}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:12px}.panel h2{font-size:28px;}}
 </style>
 </head>
 <body>
+
 <header>
-  <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><rect rx='8' width='36' height='36' fill='%236366f1'/><text x='50%' y='55%' font-size='18' font-family='Arial' text-anchor='middle' fill='white'>DH</text></svg>" alt="logo" style="width:36px;height:36px;border-radius:8px">
-  <div>
-    <h1>DataHub вузов РК</h1>
-    <div style="color:#64748b;font-size:13px">Каталог университетов Казахстана — 30 записей</div>
-  </div>
-</header>
-<main class="container">
-  <div class="controls">
-    <input id="search" type="search" placeholder="Поиск по названию или городу...">
-    <select id="cityFilter"><option value="">Все города</option></select>
-    <select id="grantFilter">
-      <option value="">Все гранты</option>
-      <option value="yes">Есть гранты</option>
-      <option value="no">Нет грантов</option>
-    </select>
-    <select id="costFilter">
-      <option value="">Все стоимости</option>
-      <option value="low">до 300 000 тг/год</option>
-      <option value="mid">300 000 - 600 000 тг/год</option>
-      <option value="high">более 600 000 тг/год</option>
-    </select>
-    <select id="sort">
-      <option value="name">Сортировать: название</option>
-      <option value="city">По городу</option>
-      <option value="cost">По стоимости</option>
-    </select>
-    <div style="margin-left:auto;color:#64748b;align-self:center">Нажмите на карточку, чтобы открыть страницу университета</div>
-  </div>
-  <div id="grid" class="grid"></div>
-</main>
-<aside id="panel" class="panel" aria-hidden="true">
-  <header>
+  <div class="brand">
+    <div class="logo">DH</div>
     <div>
-      <div id="panelName" style="font-size:18px;font-weight:800"></div>
-      <div id="panelCity" style="color:#64748b;font-size:13px;margin-top:4px"></div>
+      <h1>DataHub ВУЗ-ов РК</h1>
+      <div class="subtitle">общий каталог университетов — кратко и наглядно</div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <button id="closeBtn" title="Закрыть" style="background:transparent;border:0;color:#64748b;cursor:pointer;font-size:18px">✕</button>
-    </div>
-  </header>
-  <div class="tabs" role="tablist">
-    <div class="tab active" data-tab="about">Об университете</div>
-    <div class="tab" data-tab="programs">Академические программы</div>
-    <div class="tab" data-tab="admission">Приём и поступление</div>
-    <div class="tab" data-tab="tour">3D тур</div>
   </div>
-  <div id="tabContent" class="section"></div>
-</aside>
-<footer>
-  Сделано для демонстрации — можно расширить: отзывы, рейтинги, интеграция 3D-туров и CMS.
-</footer>
+  <div style="min-width:180px;text-align:right"><small class="subtitle">Версия демо</small></div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div class="panel p1"><h2>1</h2><small>Об университете</small><p>Информация о миссии, истории, лидерстве и достижениях.</p></div>
+    <div class="panel p2"><h2>2</h2><small>Академ. программы</small><p>Список программ, продолжительность, форма обучения, стоимость.</p></div>
+    <div class="panel p3"><h2>3</h2><small>Приём и поступление</small><p>Требования, сроки подачи, гранты и стипендии.</p></div>
+  </section>
+
+  <section style="margin-top:18px">
+    <div class="controls">
+      <div style="flex:1;min-width:220px"><input id="q" type="search" placeholder="Поиск университета"></div>
+      <div style="width:180px">
+        <select id="city">
+          <option value="">Все города</option>
+          <option value="Алматы">Алматы</option>
+          <option value="Астана">Астана</option>
+          <option value="Шымкент">Шымкент</option>
+        </select>
+      </div>
+      <button id="clearFilters" class="btn btn-ghost">Сбросить</button>
+    </div>
+    <div id="grid" class="grid"></div>
+    <div id="compareArea" class="compare-sheet" style="display:none">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        <strong>Сравнение выбранных ВУЗов</strong>
+        <button id="closeCompare" class="btn" style="margin-left:auto">Закрыть</button>
+      </div>
+      <div id="compareTableWrap"></div>
+    </div>
+  </section>
+</main>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div><strong id="modalTitle">3D-тур</strong></div>
+      <button id="closeModal" class="btn btn-ghost">Закрыть</button>
+    </div>
+    <div class="modal-body"><iframe id="mapFrame" class="map" src="" allowfullscreen loading="lazy"></iframe></div>
+  </div>
+</div>
+
 <script>
-  const universities = [
-    {id:1,name:"Nazarbayev University",city:"Нур‑Султан",desc:"Исследовательский университет с международным фокусом.",
-      programs:["Computer Science (BSc)","Engineering (BEng)","Business (MBA)"],
-      admission:"Конкурсы и вступительные испытания; международные сертификаты учитываются.",
-      coords:{lat:51.1065,lng:71.4106},
-      cost:700000,
-      grant:true
+const universities = [{
+    "id": 1,
+    "name": "Nazarbayev University",
+    "city": "Nur-Sultan (Астана)",
+    "type": "государственный / автономный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Международный исследовательский университет с англоязычными программами и акцентом на STEM, бизнес и исследования.",
+    "academic_programs": ["STEM", "Инженерия", "Медицина", "Бизнес", "Гуманитарные"],
+    "admissions": {
+      "requirements": "онлайн-заявка, подтверждение среднего образования, языковой сертификат для англ. программ, мотивационное письмо/интервью (в зависимости от программы)",
+      "tests": ["SAT/ACT или внутренний тест NUET; IELTS/TOEFL для англ. программ"],
+      "documents": ["аттестат / диплом", "паспорт/ID", "сертификаты (языковые)", "фото", "медсправка", "мотивационное письмо (если требуется)"],
+      "deadlines": "требуется уточнение на официальном сайте (зависит от года и программы)",
+      "thresholds": "требуется уточнение на официальном сайте (проходные баллы зависят от программы и года)"
     },
-    {id:2,name:"Al‑Farabi Kazakh National University",city:"Алматы",desc:"Один из старейших и крупнейших университетов Казахстана.",
-      programs:["Mathematics","Philology","Physics"],
-      admission:"Единое национальное тестирование + внутренние конкурсы.",
-      coords:{lat:43.2383,lng:76.9450},
-      cost:250000,
-      grant:false
+    "scholarships": "полные/частичные гранты доступны (NU grant и пр.)",
+    "tuition_estimate": null,
+    "languages": ["английский", "частично казахский/русский"],
+    "comparison_tags": ["элитный","англоязычный","исследовательский"],
+    "source_note": "Официальная приёмная страница вуза — уточнить ссылку"
+  },
+  {
+    "id": 2,
+    "name": "Al-Farabi Kazakh National University (KazNU)",
+    "city": "Almaty (Алматы)",
+    "type": "национальный / государственный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Крупнейший классический университет Казахстана, широкий профиль факультетов.",
+    "academic_programs": ["Гуманитарные", "Естественные науки", "Технические", "Экономика", "Юриспруденция"],
+    "admissions": {
+      "requirements": "онлайн/личная подача; ЕНТ/внутренние вступительные испытания; подтверждение среднего образования",
+      "tests": ["ЕНТ или внутренние экзамены на некоторые направления; возможны языковые тесты для англ. программ"],
+      "documents": ["аттестат", "паспорт/ID", "результаты ЕНТ", "фото", "медсправка"],
+      "deadlines": "зависит от года и факультета — уточнять на приёмной комиссии",
+      "thresholds": "зависит от направления; значения публикуются по программам (требуется уточнение на официальной странице приёма)"
     },
-    {id:3,name:"L. N. Gumilyov Eurasian National University",city:"Нур‑Султан",desc:"Широкий спектр гуманитарных и технических программ.",
-      programs:["International Relations","History","Biology"],
-      admission:"UNT и внутренние экзамены.",
-      coords:{lat:51.1285,lng:71.4306},
-      cost:300000,
-      grant:true
+    "scholarships": "гранты МОН, университетские стипендии",
+    "tuition_estimate": null,
+    "languages": ["казахский", "русский", "есть англ. программы"],
+    "comparison_tags": ["классический","научный","широкий профиль"],
+    "source_note": "Приёмная комиссия (официальный сайт KazNU) — уточнить ссылку"
+  },
+  {
+    "id": 3,
+    "name": "Satbayev University",
+    "city": "Almaty (Алматы)",
+    "type": "государственный / технический",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Ведущий технический университет, сильный в инженерных и прикладных дисциплинах.",
+    "academic_programs": ["Инженерия", "Нефтегаз", "Информационные технологии", "Прикладные науки"],
+    "admissions": {
+      "requirements": "ЕНТ / внутренние экзамены (для некоторых программ); подтверждение среднего образования",
+      "tests": ["ЕНТ; внутренние тесты по направлениям"],
+      "documents": ["аттестат", "паспорт/ID", "результаты ЕНТ", "медсправка", "фото"],
+      "deadlines": "уточнить на официальной странице приёма",
+      "thresholds": "требуется уточнение на официальном сайте (проходные баллы по специальностям)"
     },
-    {id:4,name:"Kazakh-British Technical University",city:"Алматы",desc:"Технический вуз с сильным международным сотрудничеством.",
-      programs:["Computer Engineering","Telecommunications","Business Management"],
-      admission:"Вступительные экзамены, собеседование и мотивационное письмо.",
-      coords:{lat:43.2220,lng:76.8512},
-      cost:400000,
-      grant:true
+    "scholarships": "гранты, вузовские стипендии",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский"],
+    "comparison_tags": ["технический","инженерия","нефтегаз"],
+    "source_note": "Приёмная комиссия Satbayev — уточнить ссылку"
+  },
+  {
+    "id": 4,
+    "name": "Kazakh-British Technical University (KBTU)",
+    "city": "Almaty (Алматы)",
+    "type": "государственно-частный / технический",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Технический вуз с международным уклоном, сильные программы в нефтегазе, химии, IT и экономике.",
+    "academic_programs": ["Нефтегазовая инженерия", "Химическая инженерия", "Информатика / IT", "Экономика"],
+    "admissions": {
+      "requirements": "онлайн-заявка, результаты ЕНТ/внутренние тесты, уровень английского для англ. программ",
+      "tests": ["ЕНТ или внутренние вступительные тесты; IELTS/TOEFL для англ. программ"],
+      "documents": ["аттестат", "ID", "фото", "медсправка", "языковые сертификаты (если требуются)"],
+      "deadlines": "уточнить на официальном сайте",
+      "thresholds": "зависит от программы — уточнять на странице приёма"
     },
-    {id:5,name:"South Kazakhstan State Pedagogical University",city:"Шымкент",desc:"Ведущий педагогический вуз юга Казахстана.",
-      programs:["Education","Psychology","Foreign Languages"],
-      admission:"Поступление по результатам UNT и внутренних испытаний.",
-      coords:{lat:42.3184,lng:69.5950},
-      cost:180000,
-      grant:false
+    "scholarships": "вузовские стипендии, частичные гранты",
+    "tuition_estimate": null,
+    "languages": ["русский","английский"],
+    "comparison_tags": ["инженерия","нефтегаз","международный"],
+    "source_note": "Официальная приёмная страница KBTU — уточнить ссылку"
+  },
+  {
+    "id": 5,
+    "name": "L. N. Gumilyov Eurasian National University (ENU)",
+    "city": "Nur-Sultan (Астана)",
+    "type": "национальный / государственный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Крупный университет столицы с широким спектром программ (бакалавриат/магистратура/PhD).",
+    "academic_programs": ["Гуманитарные", "Социальные", "Естественные науки", "Инженерия"],
+    "admissions": {
+      "requirements": "ЕНТ / внутренние экзамены; заявка через приёмную комиссию; подтверждение среднего образования",
+      "tests": ["ЕНТ; возможные внутренние испытания; языковые тесты для англ. программ"],
+      "documents": ["аттестат", "ID", "результаты ЕНТ", "медсправка", "фото"],
+      "deadlines": "уточнить на официальной странице приёма ENU",
+      "thresholds": "зависит от направления — требуется уточнение"
     },
-    {id:6,name:"Kokshetau State University",city:"Кокшетау",desc:"Университет с широким спектром гуманитарных и технических направлений.",
-      programs:["Law","Economics","Ecology"],
-      admission:"Поступление на основе результатов UNT и собеседования.",
-      coords:{lat:53.2850,lng:69.3862},
-      cost:200000,
-      grant:true
+    "scholarships": "гранты государства и университетские",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский","есть англ. направления"],
+    "comparison_tags": ["исследовательский","столичный","широкий профиль"],
+    "source_note": "Приёмная комиссия ENU — уточнить ссылку"
+  },
+  {
+    "id": 6,
+    "name": "Kazakh National Pedagogical University named after Abai (KazNPU Abai)",
+    "city": "Almaty (Алматы)",
+    "type": "государственный / педагогический",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Ведущий педагогический вуз страны (подготовка учителей и педагогов).",
+    "academic_programs": ["Педагогика", "Филология", "Психология", "Методики обучения"],
+    "admissions": {
+      "requirements": "ЕНТ/внутренние тесты; документы об образовании",
+      "tests": ["ЕНТ / внутренние экзамены"],
+      "documents": ["аттестат", "ID", "результаты ЕНТ", "медсправка", "фото"],
+      "deadlines": "уточнить на официальном сайте",
+      "thresholds": "зависит от направления — уточнять на сайте"
     },
-    {id:7,name:"Karaganda State Technical University",city:"Караганда",desc:"Технический университет с сильным инженерным направлением.",
-      programs:["Mechanical Engineering","Mining","Automation"],
-      admission:"Вступительные испытания и конкурс документов.",
-      coords:{lat:49.8267,lng:73.0864},
-      cost:350000,
-      grant:false
+    "scholarships": "гранты/стипендии",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский"],
+    "comparison_tags": ["педагогический","гуманитарные"],
+    "source_note": "Официальная приёмная страница КазНПУ имени Абая — уточнить ссылку"
+  },
+  {
+    "id": 7,
+    "name": "Kazakh National Agrarian University (KazNAU)",
+    "city": "Almaty (Алматы)",
+    "type": "государственный / аграрный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Университет аграрного профиля: агрономия, ветеринария, агроинженерия.",
+    "academic_programs": ["Агрономия", "Ветеринария", "Агроинженерия", "Агроэкономика"],
+    "admissions": {
+      "requirements": "ЕНТ / документы; возможны индивидуальные требования для профильных программ",
+      "tests": ["ЕНТ; профильные испытания при необходимости"],
+      "documents": ["аттестат", "паспорт/ID", "результаты ЕНТ", "медсправка"],
+      "deadlines": "уточнить на официальном сайте",
+      "thresholds": "зависит от направления — уточнять"
     },
-    {id:8,name:"Shakarim State University",city:"Семей",desc:"Университет с гуманитарными и техническими программами.",
-      programs:["History","Chemistry","Mathematics"],
-      admission:"Поступление по результатам UNT и внутренних экзаменов.",
-      coords:{lat:50.4200,lng:80.2580},
-      cost:220000,
-      grant:true
+    "scholarships": "гранты, целевые места для сельской местности (где применимо)",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский"],
+    "comparison_tags": ["аграрный","ветеринария"],
+    "source_note": "Приёмная комиссия КазНАУ — уточнить"
+  },
+  {
+    "id": 8,
+    "name": "Turan University",
+    "city": "Almaty (Алматы)",
+    "type": "частный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Крупный частный вуз; гуманитарные, бизнес и IT-программы.",
+    "academic_programs": ["Гуманитарные", "Юриспруденция", "Бизнес", "IT", "Кино/ТВ (академия)"],
+    "admissions": {
+      "requirements": "онлайн/лично; на контракт часто без ЕНТ (зависит от правил вуза); для гранта — ЕНТ",
+      "tests": ["внутренние/внешние в зависимости от программы"],
+      "documents": ["аттестат", "ID", "фото", "медсправка"],
+      "deadlines": "уточнять на сайте университета",
+      "thresholds": "на контракт — нет минимального проходного балла; на грант — зависит от ЕНТ"
     },
-    {id:9,name:"Auezov South Kazakhstan State University",city:"Шымкент",desc:"Крупный университет юга Казахстана с разносторонними программами.",
-      programs:["Journalism","Economics","Biology"],
-      admission:"UNT и конкурсные испытания для поступления.",
-      coords:{lat:42.3185,lng:69.5955},
-      cost:260000,
-      grant:false
+    "scholarships": "внутривузовские стипендии, частичные скидки",
+    "tuition_estimate": null,
+    "languages": ["русский","частично англ."],
+    "comparison_tags": ["частный","бизнес","гуманитарные"],
+    "source_note": "Официальный сайт Turan University — уточнить"
+  },
+  {
+    "id": 9,
+    "name": "Karaganda State University named after E. A. Buketov",
+    "city": "Karaganda (Караганда)",
+    "type": "государственный / классический",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Крупный классический университет центрального региона Казахстана.",
+    "academic_programs": ["Гуманитарные", "Естественные", "Социально-экономические", "Технические"],
+    "admissions": {
+      "requirements": "ЕНТ/внутренние экзамены; документы",
+      "tests": ["ЕНТ; при необходимости внутренние экзамены"],
+      "documents": ["аттестат", "ID", "результаты ЕНТ", "медсправка"],
+      "deadlines": "уточняется на официальной странице",
+      "thresholds": "зависит от направления"
     },
-    {id:10,name:"West Kazakhstan State Medical University",city:"Уральск",desc:"Медицинский вуз с современными программами.",
-      programs:["General Medicine","Dentistry","Pharmacy"],
-      admission:"Вступительные экзамены и собеседование.",
-      coords:{lat:51.2264,lng:51.4000},
-      cost:600000,
-      grant:true
+    "scholarships": "гранты, вузовские стипендии",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский"],
+    "comparison_tags": ["региональный","классический"],
+    "source_note": "Приёмная комиссия Карагандинского университета — уточнить"
+  },
+  {
+    "id": 10,
+    "name": "Aktobe Regional University named after K. Zhubanov",
+    "city": "Aktobe (Актобе)",
+    "type": "государственный / региональный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Региональный университет западного Казахстана.",
+    "academic_programs": ["Гуманитарные", "Естественные", "Экономические"],
+    "admissions": {
+      "requirements": "ЕНТ/внутренние экзамены; документы",
+      "tests": ["ЕНТ"],
+      "documents": ["аттестат", "ID", "результаты ЕНТ"],
+      "deadlines": "уточнить на сайте",
+      "thresholds": "зависит от направления"
     },
-    {id:11,name:"Kazakh National Agrarian University",city:"Алматы",desc:"Специализируется на сельском хозяйстве и биотехнологиях.",
-      programs:["Agronomy","Veterinary Science","Biotechnology"],
-      admission:"UNT и профильные экзамены.",
-      coords:{lat:43.2540,lng:76.9180},
-      cost:230000,
-      grant:false
+    "scholarships": "вузовские и государственные стипендии",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский"],
+    "comparison_tags": ["региональный"],
+    "source_note": "Официальная информация — на сайте университета"
+  },
+  {
+    "id": 11,
+    "name": "Ahmet Yesevi University (International Kazakh-Turkish University)",
+    "city": "Turkistan (Туркестан)",
+    "type": "международный / государственный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Международный вуз с казахско-турецким сотрудничеством, языковые и гуманитарные программы.",
+    "academic_programs": ["Гуманитарные", "Лингвистика", "Международные отношения"],
+    "admissions": {
+      "requirements": "онлайн-заявка; возможны требования по знанию турецкого/казахского; документы",
+      "tests": ["зависит от программы"],
+      "documents": ["аттестат", "ID", "языковые сертификаты (если требуются)"],
+      "deadlines": "уточнить на сайте университета",
+      "thresholds": "требуется уточнение"
     },
-    {id:12,name:"Eurasian National Technical University",city:"Нур‑Султан",desc:"Ведущий технический вуз с акцентом на инновации.",
-      programs:["Information Technology","Mechanical Engineering","Energy"],
-      admission:"Конкурс на основе UNT и внутренние испытания.",
-      coords:{lat:51.1360,lng:71.4300},
-      cost:450000,
-      grant:true
+    "scholarships": "международные программы обмена и гранты",
+    "tuition_estimate": null,
+    "languages": ["казахский","турецкий","русский"],
+    "comparison_tags": ["международный","турецкое сотрудничество"],
+    "source_note": "Приёмная комиссия Ахмет-Ясави — уточнить"
+  },
+  {
+    "id": 12,
+    "name": "Suleyman Demirel University (SDU)",
+    "city": "Almaty (Алматы)",
+    "type": "частный / государственно-частный",
+    "description": "Университет с сильным IT и бизнес-направлением; многие программы на английском.",
+    "academic_programs": ["IT", "Бизнес", "Инженерия"],
+    "admissions": {
+      "requirements": "онлайн-заявка; для гранта — ЕНТ; для контрактного обучения — внутренние тесты",
+      "tests": ["ЕНТ / внутренние тесты; IELTS для англ. программ"],
+      "documents": ["аттестат", "ID", "результаты ЕНТ/тестов", "медсправка"],
+      "deadlines": "уточнить на сайте SDU",
+      "thresholds": "зависит от направления"
     },
-    {id:13,name:"Kazakh University of Economics, Finance and International Trade",city:"Алматы",desc:"Экономический вуз с международными программами.",
-      programs:["Economics","Finance","International Trade"],
-      admission:"UNT и собеседование.",
-      coords:{lat:43.2560,lng:76.9300},
-      cost:380000,
-      grant:false
+    "scholarships": "внутривузовские гранты и скидки",
+    "tuition_estimate": null,
+    "languages": ["английский","русский"],
+    "comparison_tags": ["IT","англоязычный"],
+    "source_note": "Официальная приёмная SDU — уточнить"
+  },
+  {
+    "id": 13,
+    "name": "KIMEP University",
+    "city": "Almaty (Алматы)",
+    "type": "частный / международный (американская модель)",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Лидер по бизнес-образованию; программы на английском, сильный MBA/бакалавриат по бизнесу и кадрам.",
+    "academic_programs": ["Бизнес", "Экономика", "Юриспруденция", "Социальные науки"],
+    "admissions": {
+      "requirements": "онлайн-заявка; языковые сертификаты (IELTS/TOEFL) для большинства программ; аттестат",
+      "tests": ["IELTS/TOEFL для англ. программ; внутренние требования"],
+      "documents": ["аттестат", "паспорт/ID", "языковые сертификаты", "мотивационное письмо (если требуется)"],
+      "deadlines": "уточнить на официальном сайте KIMEP",
+      "thresholds": "зависит от программы"
     },
-    {id:14,name:"Kyzylorda State University",city:"Кызылорда",desc:"Региональный университет с широким выбором направлений.",
-      programs:["History","Law","Education"],
-      admission:"UNT и внутренние экзамены.",
-      coords:{lat:44.8500,lng:65.5000},
-      cost:160000,
-      grant:true
+    "scholarships": "внутривузовские стипендии, частичные гранты",
+    "tuition_estimate": null,
+    "languages": ["английский"],
+    "comparison_tags": ["бизнес","англоязычный","частный"],
+    "source_note": "Приёмная KIMEP — уточнить"
+  },
+  {
+    "id": 14,
+    "name": "Narxoz University",
+    "city": "Almaty (Алматы)",
+    "type": "частный / бизнес",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Специализация — экономика, финансы, менеджмент; программы на русском и английском.",
+    "academic_programs": ["Экономика", "Бизнес", "Финансы", "Маркетинг"],
+    "admissions": {
+      "requirements": "онлайн-заявка; ЕНТ/внутренние тесты для гранта; языковые требования для англ. программ",
+      "tests": ["ЕНТ / внутренние тесты; IELTS/TOEFL при необходимости"],
+      "documents": ["аттестат", "ID", "фото", "медсправка"],
+      "deadlines": "уточнить на сайте",
+      "thresholds": "зависит от направления"
     },
-    {id:15,name:"Aktobe Regional State University",city:"Актобе",desc:"Университет с гуманитарным и техническим направлениями.",
-      programs:["Sociology","Engineering","Management"],
-      admission:"UNT и внутренние конкурсы.",
-      coords:{lat:50.2910,lng:57.1680},
-      cost:190000,
-      grant:false
+    "scholarships": "внутривузовские гранты/скидки",
+    "tuition_estimate": null,
+    "languages": ["русский","английский","казахский"],
+    "comparison_tags": ["экономика","бизнес"],
+    "source_note": "Приёмная Narxoz — уточнить"
+  },
+  {
+    "id": 15,
+    "name": "Astana IT University",
+    "city": "Nur-Sultan (Астана)",
+    "type": "государственный / специализированный (IT)",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Университет с фокусом на цифровые технологии, программирование и data science.",
+    "academic_programs": ["Computer Science", "Data Science", "AI", "Информационная безопасность"],
+    "admissions": {
+      "requirements": "онлайн-заявка; ЕНТ/внутренние тесты; языковой сертификат для англ. программ",
+      "tests": ["ЕНТ / внутр. тесты; языковые тесты (если требуется)"],
+      "documents": ["аттестат", "ID", "результаты тестов", "медсправка"],
+      "deadlines": "уточнить на официальном сайте",
+      "thresholds": "зависит от направления"
     },
-    {id:16,name:"Pavlodar State University",city:"Павлодар",desc:"Разносторонний вуз с программами в разных сферах.",
-      programs:["Physics","Chemistry","Economics"],
-      admission:"UNT и внутренние экзамены.",
-      coords:{lat:52.3010,lng:76.9490},
-      cost:210000,
-      grant:true
+    "scholarships": "вузовские гранты и программы поддержки",
+    "tuition_estimate": null,
+    "languages": ["английский","русский","казахский"],
+    "comparison_tags": ["IT","цифровые технологии"],
+    "source_note": "Официальный сайт Astana IT University — уточнить"
+  },
+  {
+    "id": 16,
+    "name": "University of International Business (UIB)",
+    "city": "Almaty (Алматы)",
+    "type": "частный / бизнес",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Специализация — международный бизнес и менеджмент.",
+    "academic_programs": ["Международный бизнес", "Менеджмент", "Маркетинг"],
+    "admissions": {
+      "requirements": "онлайн/личная подача; требования зависят от программы",
+      "tests": ["ЕНТ / внутренние тесты"],
+      "documents": ["аттестат", "ID", "фото"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от программы"
     },
-    {id:17,name:"Semey State Medical University",city:"Семей",desc:"Медицинский вуз с современной подготовкой специалистов.",
-      programs:["Medicine","Nursing","Pharmacy"],
-      admission:"Вступительные экзамены и собеседование.",
-      coords:{lat:50.4000,lng:80.2620},
-      cost:580000,
-      grant:false
+    "scholarships": "внутривузовские гранты",
+    "tuition_estimate": null,
+    "languages": ["русский","английский"],
+    "comparison_tags": ["бизнес","международный"],
+    "source_note": "Приёмная UIB — уточнить"
+  },
+  {
+    "id": 17,
+    "name": "Kazakh Leading Academy of Architecture and Civil Engineering (KazGASA)",
+    "city": "Almaty (Алматы)",
+    "type": "государственный / профильный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Специализация — архитектура, гражданское строительство, градостроительство.",
+    "academic_programs": ["Архитектура", "Гражданское строительство", "Градостроительство"],
+    "admissions": {
+      "requirements": "ЕНТ / творческие конкурсы для архитектуры; профильные вступительные испытания",
+      "tests": ["ЕНТ; творческое испытание (архитектура)"],
+      "documents": ["аттестат", "ID", "портфолио (если требуется)"],
+      "deadlines": "уточнить на официальной странице",
+      "thresholds": "требуется уточнение по специальностям"
     },
-    {id:18,name:"Taraz State University",city:"Тараз",desc:"Исторически сложившийся университет южного региона.",
-      programs:["History","Law","Pedagogy"],
-      admission:"UNT и внутренние экзамены.",
-      coords:{lat:42.9000,lng:71.3500},
-      cost:170000,
-      grant:true
+    "scholarships": "внутривузовские",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский"],
+    "comparison_tags": ["архитектура","строительство"],
+    "source_note": "Приём KazGASA — уточнить"
+  },
+  {
+    "id": 18,
+    "name": "Kazakh Academy of Sport and Tourism",
+    "city": "Almaty (Алматы)",
+    "type": "государственный / профильный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Подготовка специалистов по спорту, туризму, менеджменту в сфере отдыха и спорта.",
+    "academic_programs": ["Физическое воспитание", "Туризм", "Спортивный менеджмент"],
+    "admissions": {
+      "requirements": "ЕНТ/внутренние тесты; медосмотр; профильные испытания",
+      "tests": ["ЕНТ; профильные испытания"],
+      "documents": ["аттестат", "медсправка", "ID"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от направления"
     },
-    {id:19,name:"Turkestan State University",city:"Туркестан",desc:"Вуз с акцентом на современные технологии и гуманитарные науки.",
-      programs:["Computer Science","Philosophy","Management"],
-      admission:"UNT и дополнительные испытания.",
-      coords:{lat:43.3000,lng:68.2500},
-      cost:240000,
-      grant:false
+    "scholarships": "внутривузовские",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский"],
+    "comparison_tags": ["спорт","туризм"],
+    "source_note": "Приёмная комиссия — уточнить"
+  },
+  {
+    "id": 19,
+    "name": "Karaganda Technical University",
+    "city": "Karaganda (Караганда)",
+    "type": "государственный / технический",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Технический университет региона, инженерные программы.",
+    "academic_programs": ["Инженерия", "Технологии", "Энергетика"],
+    "admissions": {
+      "requirements": "ЕНТ/внутренние тесты",
+      "tests": ["ЕНТ"],
+      "documents": ["аттестат", "ID", "результаты ЕНТ"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от специальности"
     },
-    {id:20,name:"Ural State University",city:"Уральск",desc:"Разносторонний университет с сильными инженерными программами.",
-      programs:["Mechanical Engineering","Mathematics","Economics"],
-      admission:"UNT и внутренние тесты.",
-      coords:{lat:51.2300,lng:51.3900},
-      cost:220000,
-      grant:true
+    "scholarships": "гранты/стипендии",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский"],
+    "comparison_tags": ["технический"],
+    "source_note": "Приём KarGTU — уточнить"
+  },
+  {
+    "id": 20,
+    "name": "West Kazakhstan State University",
+    "city": "Oral (Уральск)",
+    "type": "государственный / региональный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Классический региональный университет Западного Казахстана.",
+    "academic_programs": ["Гуманитарные", "Естественные", "Экономика"],
+    "admissions": {
+      "requirements": "ЕНТ/внутренние экзамены",
+      "tests": ["ЕНТ"],
+      "documents": ["аттестат", "ID"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от направления"
     },
-    {id:21,name:"Zhezkazgan University",city:"Жезказган",desc:"Региональный вуз с техническими и гуманитарными программами.",
-      programs:["Mining","Geology","Law"],
-      admission:"UNT и внутренние экзамены.",
-      coords:{lat:47.8000,lng:67.7000},
-      cost:180000,
-      grant:false
+    "scholarships": "гранты",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский"],
+    "comparison_tags": ["региональный"],
+    "source_note": "Приёмная — уточнить"
+  },
+  {
+    "id": 21,
+    "name": "East Kazakhstan Technical University (EKSTU)",
+    "city": "Oskemen / Ust-Kamenogorsk (Усть-Каменогорск)",
+    "type": "государственный / технический",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Технический вуз восточного Казахстана.",
+    "academic_programs": ["Инженерия", "Горное дело", "Технологии"],
+    "admissions": {
+      "requirements": "ЕНТ/вступительные испытания",
+      "tests": ["ЕНТ"],
+      "documents": ["аттестат", "ID"],
+      "deadlines": "уточнить на сайте",
+      "thresholds": "зависит от направления"
     },
-    {id:22,name:"Kostanay State University",city:"Костанай",desc:"Университет с сильным педагогическим направлением.",
-      programs:["Education","Psychology","History"],
-      admission:"UNT и внутренние конкурсы.",
-      coords:{lat:53.2000,lng:63.6000},
-      cost:190000,
-      grant:true
+    "scholarships": "внутривузовские",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский"],
+    "comparison_tags": ["технический","региональный"],
+    "source_note": "Приём EKSTU — уточнить"
+  },
+  {
+    "id": 22,
+    "name": "Toraighyrov University",
+    "city": "Pavlodar (Павлодар)",
+    "type": "государственный / региональный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Региональный университет с техническим и гуманитарным профилем.",
+    "academic_programs": ["Инженерия", "Естественные науки", "Гуманитарные"],
+    "admissions": {
+      "requirements": "ЕНТ/внутренние экзамены",
+      "tests": ["ЕНТ"],
+      "documents": ["аттестат", "ID"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от направления"
     },
-    {id:23,name:"East Kazakhstan State Technical University",city:"Өскемен",desc:"Технический вуз с инновационными программами.",
-      programs:["Electrical Engineering","Automation","Construction"],
-      admission:"UNT и вступительные испытания.",
-      coords:{lat:49.9500,lng:82.6000},
-      cost:350000,
-      grant:false
+    "scholarships": "гранты/вузовские",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский"],
+    "comparison_tags": ["региональный","технический"],
+    "source_note": "Приём Торайгырова — уточнить"
+  },
+  {
+    "id": 23,
+    "name": "Semey Medical University",
+    "city": "Semey (Семей)",
+    "type": "государственный / медицинский",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Медицинский университет с направлением подготовки врачей и фармацевтов.",
+    "academic_programs": ["Медицина", "Стоматология", "Фармация"],
+    "admissions": {
+      "requirements": "ЕНТ/вступительные испытания по профильным предметам; медицинская комиссия",
+      "tests": ["ЕНТ; профильные экзамены"],
+      "documents": ["аттестат", "ID", "медсправка"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от специальности (медицина обычно требует высоких баллов)"
     },
-    {id:24,name:"Kazakh Ablai Khan University of International Relations and World Languages",city:"Алматы",desc:"Университет с международным уклоном.",
-      programs:["International Relations","Linguistics","Economics"],
-      admission:"UNT и собеседование.",
-      coords:{lat:43.2350,lng:76.8850},
-      cost:320000,
-      grant:true
+    "scholarships": "гранты/целевые места",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский"],
+    "comparison_tags": ["медицина"],
+    "source_note": "Приём Семейского медуниверситета — уточнить"
+  },
+  {
+    "id": 24,
+    "name": "Astana Medical University",
+    "city": "Nur-Sultan (Астана)",
+    "type": "государственный / медицинский",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Один из ведущих медицинских вузов страны.",
+    "academic_programs": ["Медицина", "Стоматология", "Фармация", "Сестринское дело"],
+    "admissions": {
+      "requirements": "ЕНТ/профильные экзамены, медицинская комиссия",
+      "tests": ["ЕНТ; профильные испытания"],
+      "documents": ["аттестат", "ID", "медсправка"],
+      "deadlines": "уточнить на официальном сайте",
+      "thresholds": "высокие требования для медицины — уточнить значения"
     },
-    {id:25,name:"Kazakh Leading Academy of Architecture and Civil Engineering",city:"Алматы",desc:"Вуз с упором на архитектуру и строительство.",
-      programs:["Architecture","Civil Engineering","Urban Planning"],
-      admission:"Вступительные испытания и портфолио.",
-      coords:{lat:43.2600,lng:76.9450},
-      cost:400000,
-      grant:false
+    "scholarships": "гранты/целевые места",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский","английский (на некоторых программах)"],
+    "comparison_tags": ["медицина"],
+    "source_note": "Приёмная Astana Medical University — уточнить"
+  },
+  {
+    "id": 25,
+    "name": "Kurmangazy Kazakh National Conservatory",
+    "city": "Almaty (Алматы)",
+    "type": "государственный / профильный (музыка)",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Консерватория — подготовка музыкантов, дирижёров, композиторов.",
+    "academic_programs": ["Музыка", "Инструментальное искусство", "Композиторство"],
+    "admissions": {
+      "requirements": "творческие конкурсы/испытания, портфолио, документы",
+      "tests": ["творческий конкурс; возможно ЕНТ для общего допуска"],
+      "documents": ["аттестат", "ID", "портфолио/видео выступлений"],
+      "deadlines": "уточнить",
+      "thresholds": "творческий отбор — по результатам конкурса"
     },
-    {id:26,name:"Kokshetau Technical Institute",city:"Кокшетау",desc:"Технический институт с широким выбором инженерных программ.",
-      programs:["Mechanical Engineering","Computer Science","Energy"],
-      admission:"UNT и внутренние тесты.",
-      coords:{lat:53.3000,lng:69.3800},
-      cost:210000,
-      grant:true
+    "scholarships": "внутривузовские",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский"],
+    "comparison_tags": ["искусство","музыка"],
+    "source_note": "Приёмная консерватории — уточнить"
+  },
+  {
+    "id": 26,
+    "name": "Kazakh National Academy of Arts named after T. Zhurgenov",
+    "city": "Almaty (Алматы)",
+    "type": "государственный / профильный (искусство)",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Академия кино, театра, изобразительных искусств и дизайна.",
+    "academic_programs": ["Театр", "Кино", "Дизайн", "Изобразительное искусство"],
+    "admissions": {
+      "requirements": "творческие испытания/портфолио; документы",
+      "tests": ["творческий конкурс"],
+      "documents": ["аттестат", "ID", "портфолио"],
+      "deadlines": "уточнить",
+      "thresholds": "по результатам творческого испытания"
     },
-    {id:27,name:"Kazakh National Conservatory",city:"Алматы",desc:"Ведущий музыкальный вуз страны.",
-      programs:["Music Performance","Composition","Conducting"],
-      admission:"Прослушивание и творческий конкурс.",
-      coords:{lat:43.2400,lng:76.9500},
-      cost:250000,
-      grant:false
+    "scholarships": "внутривузовские",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский"],
+    "comparison_tags": ["искусство","кино","театр"],
+    "source_note": "Приёмная академии — уточнить"
+  },
+  {
+    "id": 27,
+    "name": "Kokshetau State University named after Shokan Ualikhanov",
+    "city": "Kokshetau (Кокшетау)",
+    "type": "государственный / региональный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Региональный университет северного Казахстана.",
+    "academic_programs": ["Гуманитарные", "Естественные", "Экономика"],
+    "admissions": {
+      "requirements": "ЕНТ/внутренние экзамены",
+      "tests": ["ЕНТ"],
+      "documents": ["аттестат", "ID"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от направления"
     },
-    {id:28,name:"Kazakh-Russian International University",city:"Алматы",desc:"Международный университет с разноплановыми программами.",
-      programs:["Business","Law","Engineering"],
-      admission:"UNT и собеседование.",
-      coords:{lat:43.2500,lng:76.9200},
-      cost:370000,
-      grant:true
+    "scholarships": "гранты/стипендии",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский"],
+    "comparison_tags": ["региональный"],
+    "source_note": "Приёмный офис КГУ — уточнить"
+  },
+  {
+    "id": 28,
+    "name": "Taraz Regional University",
+    "city": "Taraz (Тараз)",
+    "type": "государственный / региональный",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Региональный классический университет южной части страны.",
+    "academic_programs": ["Гуманитарные", "Естественные", "Экономика"],
+    "admissions": {
+      "requirements": "ЕНТ/вступительные экзамены",
+      "tests": ["ЕНТ"],
+      "documents": ["аттестат", "ID"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от направления"
     },
-    {id:29,name:"West Kazakhstan State University",city:"Уральск",desc:"Университет с гуманитарными и техническими направлениями.",
-      programs:["Sociology","Economics","Law"],
-      admission:"UNT и внутренние экзамены.",
-      coords:{lat:51.2250,lng:51.4100},
-      cost:200000,
-      grant:false
+    "scholarships": "внутривузовские и государственные",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский"],
+    "comparison_tags": ["региональный"],
+    "source_note": "Приём Taraz University — уточнить"
+  },
+  {
+    "id": 29,
+    "name": "Shakarim University (Semey)",
+    "city": "Semey (Семей)",
+    "type": "государственный / классический",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Региональный университет с гуманитарной и естественно-научной направленностью.",
+    "academic_programs": ["Гуманитарные", "Естественные", "Юриспруденция"],
+    "admissions": {
+      "requirements": "ЕНТ/документы",
+      "tests": ["ЕНТ"],
+      "documents": ["аттестат", "ID"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от направления"
     },
-    {id:30,name:"Zhubanov Aktobe Regional University",city:"Актобе",desc:"Региональный университет с широким спектром специальностей.",
-      programs:["Philosophy","Economics","Mathematics"],
-      admission:"UNT и внутренние конкурсы.",
-      coords:{lat:50.2800,lng:57.1700},
-      cost:190000,
-      grant:true
+    "scholarships": "вузовские",
+    "tuition_estimate": null,
+    "languages": ["русский","казахский"],
+    "comparison_tags": ["гуманитарные","региональный"],
+    "source_note": "Приём Шакарим — уточнить"
+  },
+  {
+    "id": 30,
+    "name": "M. Auezov South Kazakhstan State University (SKSU)",
+    "city": "Shymkent (Шымкент)",
+    "type": "государственный / классический",
+    "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
+    "description": "Крупный университет южного региона, широкий набор программ.",
+    "academic_programs": ["Гуманитарные", "Естественные", "Социальные", "Инженерия"],
+    "admissions": {
+      "requirements": "ЕНТ/внутренние экзамены",
+      "tests": ["ЕНТ"],
+      "documents": ["аттестат", "ID"],
+      "deadlines": "уточнить",
+      "thresholds": "зависит от направления"
     },
-    // Добавить остальные 27 по образцу...
+    "scholarships": "гранты/субсидии",
+    "tuition_estimate": null,
+    "languages": ["казахский","русский"],
+    "comparison_tags": ["классический","региональный"],
+    "source_note": "Приём SKSU — уточнить"
+  }
+];
+
+const grid = document.getElementById('grid');
+const q = document.getElementById('q');
+const city = document.getElementById('city');
+const clearFilters = document.getElementById('clearFilters');
+const modal = document.getElementById('modal');
+const mapFrame = document.getElementById('mapFrame');
+const modalTitle = document.getElementById('modalTitle');
+let compareSet = new Set();
+
+function updateCompareArea() {
+  const ids = Array.from(compareSet);
+  const area = document.getElementById('compareArea');
+  const wrap = document.getElementById('compareTableWrap');
+
+  if (ids.length === 0) {
+    area.style.display = 'none';
+    wrap.innerHTML = '';
+    return;
+  }
+
+  area.style.display = 'block';
+
+  const items = universities.filter(u => ids.includes(u.id));
+  let html = '<table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse;width:100%"><thead><tr><th>Атрибут</th>';
+  items.forEach(i => html += `<th>${i.name}</th>`);
+  html += '</tr></thead><tbody>';
+
+  const attrs = [
+    ['Регион', 'city'],
+    ['Тип', 'type'],
+    ['Описание', 'description'],
+    ['Программы', 'academic_programs'],
+    ['Приём', 'admissions'],
+    ['Стипендии', 'scholarships'],
+    ['Языки', 'languages'],
+    ['3D-ссылка', 'url3d']
   ];
 
-  const grid = document.getElementById('grid');
-  const search = document.getElementById('search');
-  const cityFilter = document.getElementById('cityFilter');
-  const grantFilter = document.getElementById('grantFilter');
-  const costFilter = document.getElementById('costFilter');
-  const sort = document.getElementById('sort');
-  const panel = document.getElementById('panel');
-  const panelName = document.getElementById('panelName');
-  const panelCity = document.getElementById('panelCity');
-  const tabContent = document.getElementById('tabContent');
-  const closeBtn = document.getElementById('closeBtn');
+  attrs.forEach(([label, key]) => {
+    html += `<tr><th>${label}</th>`;
+    items.forEach(it => {
+      let val = it[key];
 
-  // Заполняем фильтр городов
-  const cities = Array.from(new Set(universities.map(u=>u.city))).sort();
-  cities.forEach(c=>{
-    const o=document.createElement('option');
-    o.value=c;
-    o.textContent=c;
-    cityFilter.appendChild(o);
+      if (key === 'academic_programs' || key === 'languages') {
+        val = Array.isArray(val) ? val.join('<br>') : '—';
+      } else if (key === 'admissions') {
+        val = val
+          ? `Требования: ${val.requirements || '—'}<br>
+             Тесты: ${(val.tests || []).join(', ') || '—'}<br>
+             Документы: ${(val.documents || []).join(', ') || '—'}<br>
+             Сроки: ${val.deadlines || '—'}<br>
+             Порог: ${val.thresholds || '—'}`
+          : '—';
+      } else if (key === 'url3d') {
+        val = val ? `<a href="${val}" target="_blank">смотреть</a>` : '—';
+      }
+
+      html += `<td>${val || '—'}</td>`;
+    });
+    html += '</tr>';
   });
 
-  function renderGrid(list){
-    grid.innerHTML='';
-    if(list.length===0){
-      grid.innerHTML='<div style="color:#64748b;text-align:center;width:100%;padding:40px 0">По вашему запросу ничего не найдено</div>';
-      return;
-    }
-    list.forEach(u=>{
-      const el=document.createElement('div');
-      el.className='card';
-      el.tabIndex=0;
-      el.innerHTML=`
-        <div class="title">${u.name}</div>
-        <div class="meta">${u.city} · <span class="pill">Программ: ${u.programs.length}</span></div>
-        <div style="margin-top:8px;color:#64748b;font-size:13px">${u.desc}</div>
-        <div style="margin-top:8px;font-size:13px">
-          <strong>Стоимость: </strong>${u.cost.toLocaleString()} тг/год<br>
-          <strong>Гранты: </strong>${u.grant ? 'Есть' : 'Нет'}
-        </div>
-      `;
-      el.addEventListener('click',()=>openPanel(u));
-      el.addEventListener('keypress',e=>{if(e.key==='Enter') openPanel(u)});
-      grid.appendChild(el);
-    });
-  }
+  html += '</tbody></table>';
 
-  function openPanel(u){
-    panel.classList.add('show');
-    panel.setAttribute('aria-hidden','false');
-    panelName.textContent = u.name;
-    panelCity.textContent = u.city;
-    panel.dataset.currentId = u.id;
-    setActiveTab('about');
-    renderAbout(u);
-  }
+  html += `
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button id="compareOpenAll" class="btn">Открыть 3D каждого</button>
+      <button id="compareClear" class="btn btn-ghost">Очистить сравнение</button>
+    </div>`;
 
-  function closePanel(){
-    panel.classList.remove('show');
-    panel.setAttribute('aria-hidden','true');
-  }
-  closeBtn.addEventListener('click', closePanel);
+  wrap.innerHTML = html;
 
-  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click', e=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    e.currentTarget.classList.add('active');
-    setActiveTab(e.currentTarget.dataset.tab);
-  }));
-
-  function setActiveTab(tab){
-    const id = +panel.dataset.currentId;
-    const u = universities.find(x=>x.id===id);
-    if(!u) return;
-    if(tab==='about') renderAbout(u);
-    if(tab==='programs') renderPrograms(u);
-    if(tab==='admission') renderAdmission(u);
-    if(tab==='tour') renderTour(u);
-  }
-
-  function renderAbout(u){
-    tabContent.innerHTML = `
-      <div style="font-size:14px;color:#64748b">${u.desc}</div>
-      <div class="section"><strong>Контакты</strong><div style="color:#64748b;margin-top:6px">Город: ${u.city}<br>Телефон: +7 (727) 000-00-00<br>Email: info@${u.name.replace(/[^a-z0-9]/gi,'').toLowerCase()}.edu.kz</div></div>
-      <div class="section"><strong>Координаты</strong><div style="color:#64748b;margin-top:6px">lat: ${u.coords.lat}, lng: ${u.coords.lng}</div></div>
-      <div class="section"><strong>Стоимость обучения</strong><div style="color:#64748b;margin-top:6px">${u.cost.toLocaleString()} тг/год</div></div>
-      <div class="section"><strong>Гранты</strong><div style="color:#64748b;margin-top:6px">${u.grant ? 'Доступны гранты' : 'Гранты не предоставляются'}</div></div>
-    `;
-  }
-
-  function renderPrograms(u){
-    tabContent.innerHTML = `<div><strong>Академические программы</strong></div>`;
-    u.programs.forEach(p=>{
-      const d = document.createElement('div');
-      d.className = 'program';
-      d.innerHTML = `<div style="font-weight:700">${p}</div><div style="color:#64748b;margin-top:6px">Уровни: бакалавриат / магистратура — проверьте разделы на официальном сайте.</div>`;
-      tabContent.appendChild(d);
-    });
-  }
-
-  function renderAdmission(u){
-    tabContent.innerHTML = `<div><strong>Приём и поступление</strong></div><div style="color:#64748b;margin-top:8px">${u.admission}</div><div style="margin-top:12px"><a class="btn" href="#" id="applyBtn">Как поступить</a></div>`;
-    document.getElementById('applyBtn').addEventListener('click', e=>{
-      e.preventDefault();
-      alert('Шаблон: Подать заявление через онлайн‑портал университета, подготовить сертификаты и портфолио.');
-    });
-  }
-
-  function renderTour(u){
-    tabContent.innerHTML = `<div><strong>3D тур</strong></div>
-      <iframe 
-        width="100%" 
-        height="320" 
-        frameborder="0" 
-        style="border:0;border-radius:8px;margin-top:8px" 
-        src="https://maps.google.com/maps?q=${encodeURIComponent(u.name + ' ' + u.city)}&t=k&output=embed" 
-        allowfullscreen>
-      </iframe>`;
-  }
-
-  function applyFilters(){
-    const q = search.value.trim().toLowerCase();
-    const city = cityFilter.value;
-    const grantVal = grantFilter.value;
-    const costVal = costFilter.value;
-
-    let list = universities.filter(u=>{
-      // Поиск по названию и городу
-      if(q && !(u.name.toLowerCase().includes(q) || u.city.toLowerCase().includes(q))) return false;
-
-      if(city && u.city !== city) return false;
-
-      if(grantVal === 'yes' && !u.grant) return false;
-      if(grantVal === 'no' && u.grant) return false;
-
-      if(costVal === 'low' && u.cost > 300000) return false;
-      if(costVal === 'mid' && (u.cost < 300000 || u.cost > 600000)) return false;
-      if(costVal === 'high' && u.cost <= 600000) return false;
-
-      return true;
-    });
-
-    // Сортировка
-    if(sort.value === 'name') {
-      list.sort((a,b)=>a.name.localeCompare(b.name));
-    } else if(sort.value === 'city') {
-      list.sort((a,b)=>a.city.localeCompare(b.city));
-    } else if(sort.value === 'cost') {
-      list.sort((a,b)=>a.cost - b.cost);
-    }
-
-    renderGrid(list);
-  }
-
-  // Навешиваем обработчики на фильтры и поиск
-  [search, cityFilter, grantFilter, costFilter, sort].forEach(el=>{
-    el.addEventListener('input', applyFilters);
+  document.getElementById('compareClear').addEventListener('click', () => {
+    compareSet.clear();
+    grid.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+    updateCompareArea();
   });
 
-  // Изначальный рендер всего списка
-  renderGrid(universities);
+  document.getElementById('compareOpenAll').addEventListener('click', () => {
+    const first3D = items.find(u => u.url3d);
+    if (first3D) {
+      modalTitle.textContent = `3D-тур — ${first3D.name}`;
+      mapFrame.src = first3D.url3d;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    } else {
+      alert('У выбранного университета нет 3D-ссылки.');
+    }
+  });
+}
+
+  
+function renderList(list){
+  grid.innerHTML = '';
+  if(!list.length) return grid.innerHTML='<div style="grid-column:1/-1;padding:20px;background:#fff;border-radius:10px">Ничего не найдено</div>';
+  list.forEach(u=>{
+    const el = document.createElement('div');
+    el.className='card';
+    el.innerHTML=`
+      <h3>${u.name}</h3>
+      <div class="tags">${(u.academic_programs||[]).slice(0,3).map(p=>`<span class="tag">${p}</span>`).join('')}</div>
+      <div class="card-actions">
+        <button class="btn" data-id="${u.id}" data-action="tour"${u.url3d?'':' disabled'}>3D-тур</button>
+        <button class="btn btn-ghost" data-id="${u.id}" data-action="details">Подробнее</button>
+        <label class="compare-checkbox"><input type="checkbox" data-id="${u.id}" ${compareSet.has(u.id)?'checked':''}/>Сравнить</label>
+      </div>`;
+    grid.appendChild(el);
+  });
+}
+
+function applyFilters(){
+  const term=q.value.trim().toLowerCase();
+  const r=city.value;
+  renderList(universities.filter(u=>
+    (!r || u.city.includes(r)) &&
+    (!term || (u.name+' '+(u.short||'')+' '+u.academic_programs.join(' ')).toLowerCase().includes(term))
+  ));
+}
+
+q.addEventListener('input',applyFilters);
+city.addEventListener('change',applyFilters);
+clearFilters.addEventListener('click',()=>{q.value='';city.value='';applyFilters();});
+
+grid.addEventListener('click',e=>{
+  const btn=e.target.closest('button');
+  if(!btn) return;
+  const uni = universities.find(u=>u.id==btn.dataset.id);
+  if(!uni) return;
+  if(btn.dataset.action==='tour'){ modalTitle.textContent=`3D-тур — ${uni.name}`; mapFrame.src=uni.url3d; modal.classList.add('open'); }
+  if(btn.dataset.action==='details'){ modalTitle.textContent=uni.name; mapFrame.src=''; modal.classList.add('open'); }
+});
+
+document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('open'));
+
+renderList(universities);
 </script>
+
 </body>
 </html>
