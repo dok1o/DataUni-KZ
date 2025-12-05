@@ -811,7 +811,7 @@ grid.addEventListener('click',e=>{
     modal.classList.add('open');
     modal.setAttribute('aria-hidden','false');
   } else if(action==='details'){
-    alert(`${uni.name}\n\nПрограммы:\n- ${uni.programs.join('\n- ')}\n\nКонтакт: ${uni.contact}`);
+    alert(`${uni.name}\n\nПрограммы:\n- ${uni.academic_programs.join('\n- ')}\n\nКонтакт: ${uni.contact}`);
   }
 });
 
@@ -910,4 +910,5 @@ document.getElementById('closeCompare').addEventListener('click',()=>{compareSet
 
 </body>
 </html>
+
 
