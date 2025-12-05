@@ -272,14 +272,14 @@
 <footer>
   Сделано для демонстрации — можно расширить: отзывы, рейтинги, интеграция 3D-туров и CMS.
 </footer>
-  <!-- Чат-бот -->
+<!-- Чат-бот -->
 <div id="chatBot" style="position:fixed;bottom:20px;right:20px;width:350px;max-width:90%;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.2);overflow:hidden;display:flex;flex-direction:column;z-index:999">
-  <div style="background:#1a73e8;color:#fff;padding:10px;font-weight:bold;display:flex;justify-content:space-between;align-items:center">
-    Чат с GPT
-    <button id="closeChat" style="background:transparent;border:none;color:white;font-size:18px;cursor:pointer">✕</button>
+  <div id="chatHeader" style="background:#1a73e8;color:#fff;padding:10px;font-weight:bold;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+    <span>Чат с GPT</span>
+    <button id="minimizeChat" style="background:transparent;border:none;color:white;font-size:18px;cursor:pointer">—</button>
   </div>
-  <div id="chatMessages" style="flex:1;padding:10px;overflow-y:auto;min-height:200px"></div>
-  <div style="display:flex;gap:10px;padding:10px;border-top:1px solid #ccc">
+  <div id="chatBody" style="flex:1;padding:10px;overflow-y:auto;min-height:200px;display:flex;flex-direction:column;gap:5px"></div>
+  <div id="chatInputRow" style="display:flex;gap:10px;padding:10px;border-top:1px solid #ccc">
     <input id="chatInput" type="text" placeholder="Введите сообщение..." style="flex:1;padding:8px;border-radius:8px;border:1px solid #ccc">
     <button id="sendChat" style="padding:8px 12px;border:none;background:#1a73e8;color:white;border-radius:8px;cursor:pointer">Отправить</button>
   </div>
@@ -660,10 +660,43 @@
   // Изначальный рендер всего списка
   renderGrid(universities);
 
+const chatBot = document.getElementById("chatBot");
+const chatBody = document.getElementById("chatBody");
+const chatInputRow = document.getElementById("chatInputRow");
+const minimizeBtn = document.getElementById("minimizeChat");
 const sendBtn = document.getElementById("sendChat");
 const promptInput = document.getElementById("chatInput");
-const messagesDiv = document.getElementById("chatMessages");
 
+let isMinimized = false;
+
+minimizeBtn.addEventListener("click", () => {
+  if (!isMinimized) {
+    chatBody.style.display = "none";
+    chatInputRow.style.display = "none";
+    chatBot.style.height = "40px";
+    isMinimized = true;
+    minimizeBtn.textContent = "▢"; // меняем значок
+  } else {
+    chatBody.style.display = "flex";
+    chatInputRow.style.display = "flex";
+    chatBot.style.height = "auto";
+    isMinimized = false;
+    minimizeBtn.textContent = "—";
+  }
+});
+
+// Клик по заголовку тоже разворачивает чат
+document.getElementById("chatHeader").addEventListener("click", (e) => {
+  if (isMinimized && e.target.id !== "minimizeChat") {
+    chatBody.style.display = "flex";
+    chatInputRow.style.display = "flex";
+    chatBot.style.height = "auto";
+    isMinimized = false;
+    minimizeBtn.textContent = "—";
+  }
+});
+
+// Отправка сообщений
 sendBtn.addEventListener("click", async () => {
   const prompt = promptInput.value.trim();
   if (!prompt) return;
@@ -671,9 +704,8 @@ sendBtn.addEventListener("click", async () => {
   const userMsg = document.createElement("div");
   userMsg.textContent = prompt;
   userMsg.className = "message user";
-  messagesDiv.appendChild(userMsg);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
+  chatBody.appendChild(userMsg);
+  chatBody.scrollTop = chatBody.scrollHeight;
   promptInput.value = "";
 
   try {
@@ -687,28 +719,26 @@ sendBtn.addEventListener("click", async () => {
     const botMsg = document.createElement("div");
     botMsg.textContent = data.result;
     botMsg.className = "message bot";
-    messagesDiv.appendChild(botMsg);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    chatBody.appendChild(botMsg);
+    chatBody.scrollTop = chatBody.scrollHeight;
   } catch (err) {
     const errorMsg = document.createElement("div");
     errorMsg.textContent = "Ошибка: " + err.message;
     errorMsg.className = "message bot";
     errorMsg.style.color = "red";
-    messagesDiv.appendChild(errorMsg);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    chatBody.appendChild(errorMsg);
+    chatBody.scrollTop = chatBody.scrollHeight;
   }
 });
 
-promptInput.addEventListener("keypress", function(e) {
-  if (e.key === 'Enter') sendBtn.click();
-});
-
-document.getElementById("closeChat").addEventListener("click", () => {
-  document.getElementById("chatBot").style.display = "none";
+// Отправка по Enter
+promptInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") sendBtn.click();
 });
 </script>
 </body>
 </html>
+
 
 
 
