@@ -813,9 +813,8 @@ grid.addEventListener('click', e => {
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
   } else if (action === 'details') {
-    // наполняем modal контентом про университет
     modalTitle.textContent = uni.name;
-    mapFrame.src = ''; // отключаем 3D-тур
+    mapFrame.src = ''; 
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
 
@@ -932,6 +931,7 @@ document.getElementById('closeCompare').addEventListener('click',()=>{compareSet
 
 </body>
 </html>
+
 
 
 
