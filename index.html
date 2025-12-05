@@ -6,34 +6,30 @@
 <title>Каталог ВУЗов РК — DataHub</title>
 <style>
 :root{
-  --bg:#eef4ff; --card:#f7fbff; --accent:#3578ff; --accent-2:#2b6fd8;
-  --muted:#7f8fa6; --radius:18px;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --bg:#eef4ff; --card:#f7fbff; --accent:#3578ff; --accent2:#2b6fd8;
+  --muted:#7f8fa6; --radius:18px; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
 }
 *{box-sizing:border-box;}
 body{margin:0;background:linear-gradient(180deg,var(--bg),#f3f8ff);color:#123;line-height:1.45;}
-header{padding:28px 20px;display:flex;align-items:center;gap:18px;justify-content:space-between;}
-.brand{display:flex;gap:12px;align-items:center;}
-.logo{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;}
+header{padding:28px 20px;display:flex;justify-content:space-between;align-items:center;gap:18px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.logo{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;}
 h1{margin:0;font-size:20px;}
 .subtitle{color:var(--muted);font-size:13px;}
 .container{max-width:1150px;margin:18px auto;padding:18px;}
-.hero{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch;}
-.panel{background:linear-gradient(180deg,rgba(255,255,255,0.15),rgba(255,255,255,0.05));border-radius:var(--radius);padding:28px;color:#fff;min-height:240px;position:relative;overflow:hidden;}
-.panel h2{font-size:42px;margin:0 0 8px 0;font-weight:700;}
-.panel small{display:block;color:rgba(255,255,255,0.85);opacity:0.95;}
+.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;}
+.panel{border-radius:var(--radius);padding:20px;color:#fff;position:relative;overflow:hidden;}
+.panel h2{margin:0 0 8px;font-size:36px;}
 .p1{background:linear-gradient(180deg,#6fa8ff,#77a6ff);}
 .p2{background:linear-gradient(180deg,#4f82ff,#3a6df5);}
 .p3{background:linear-gradient(180deg,#2d58e8,#1f45cc);}
-.controls{margin:18px 0;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
-.search{flex:1;min-width:220px;}
-input[type="search"], select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #e0e8ff;background:white;font-size:14px;}
+.controls{margin:18px 0;display:flex;gap:12px;flex-wrap:wrap;}
+input, select{padding:10px;border-radius:10px;border:1px solid #e0e8ff;font-size:14px;width:100%;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:14px;}
-.card{background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(18,34,80,0.04);box-shadow:0 6px 18px rgba(15,30,80,0.04);}
-.card h3{margin:0 0 6px 0;font-size:18px;}
-.meta{color:var(--muted);font-size:13px;margin-bottom:8px;}
+.card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(15,30,80,0.04);}
+.card h3{margin:0 0 6px;font-size:18px;}
 .tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
-.tag{background:#eef5ff;padding:6px 8px;border-radius:999px;font-size:12px;color:#2357d4;}
+.tag{background:#eef5ff;padding:4px 8px;border-radius:999px;font-size:12px;color:#2357d4;}
 .card-actions{display:flex;gap:8px;align-items:center;}
 .btn{padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:white;cursor:pointer;}
 .btn.ghost{background:transparent;border:1px solid #ddd;color:#123;}
@@ -41,14 +37,10 @@ input[type="search"], select{width:100%;padding:10px 12px;border-radius:10px;bor
 .modal{position:fixed;inset:0;background:rgba(6,10,30,0.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60;}
 .modal.open{display:flex;}
 .modal-content{width:100%;max-width:1100px;background:white;border-radius:12px;overflow:hidden;}
-.modal-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f0f0f6;}
-.modal-body{height:70vh;}
+.modal-header{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f0f0f6;}
+.modal-body{height:70vh;overflow:auto;}
 iframe.map{width:100%;height:100%;border:0;}
-.compare-sheet{margin-top:18px;background:#fff;padding:14px;border-radius:12px;border:1px solid #eef3ff;}
-table{width:100%;border-collapse:collapse;}
-th,td{padding:8px;border-bottom:1px solid #f2f6ff;text-align:left;}
-th{background:#fbfdff;}
-@media (max-width:900px){.hero{grid-template-columns:1fr;gap:12px}.panel{min-height:160px;padding:18px}.panel h2{font-size:34px}}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:12px}.panel h2{font-size:28px;}}
 </style>
 </head>
 <body>
@@ -65,24 +57,15 @@ th{background:#fbfdff;}
 </header>
 
 <main class="container">
-  <section class="hero" aria-label="главные разделы">
-    <div class="panel p1">
-      <h2>1</h2><small>Об университете</small>
-      <p style="margin-top:14px;opacity:0.95">Информация о миссии, истории, лидерстве и достижениях университета.</p>
-    </div>
-    <div class="panel p2">
-      <h2>2</h2><small>Академ. программы</small>
-      <p style="margin-top:14px;opacity:0.95">Список и подробности по программам: продолжительность, форма обучения, стоимость.</p>
-    </div>
-    <div class="panel p3">
-      <h2>3</h2><small>Приём и поступление</small>
-      <p style="margin-top:14px;opacity:0.95">Требования, сроки подачи, гранты и стипендии.</p>
-    </div>
+  <section class="hero">
+    <div class="panel p1"><h2>1</h2><small>Об университете</small><p>Информация о миссии, истории, лидерстве и достижениях.</p></div>
+    <div class="panel p2"><h2>2</h2><small>Академ. программы</small><p>Список программ, продолжительность, форма обучения, стоимость.</p></div>
+    <div class="panel p3"><h2>3</h2><small>Приём и поступление</small><p>Требования, сроки подачи, гранты и стипендии.</p></div>
   </section>
 
   <section style="margin-top:18px">
     <div class="controls">
-      <div class="search"><input id="q" type="search" placeholder="Поиск университета"></div>
+      <div style="flex:1;min-width:220px"><input id="q" type="search" placeholder="Поиск университета"></div>
       <div style="width:180px">
         <select id="region">
           <option value="">Все регионы</option>
@@ -91,11 +74,9 @@ th{background:#fbfdff;}
           <option value="Шымкент">Шымкент</option>
         </select>
       </div>
-      <div><button id="clearFilters" class="btn btn-ghost">Сбросить</button></div>
+      <button id="clearFilters" class="btn btn-ghost">Сбросить</button>
     </div>
-
-    <div id="grid" class="grid" aria-live="polite"></div>
-
+    <div id="grid" class="grid"></div>
     <div id="compareArea" class="compare-sheet" style="display:none">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
         <strong>Сравнение выбранных ВУЗов</strong>
@@ -106,24 +87,21 @@ th{background:#fbfdff;}
   </section>
 </main>
 
-<div id="modal" class="modal" role="dialog" aria-hidden="true">
+<div id="modal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
       <div><strong id="modalTitle">3D-тур</strong></div>
-      <div><button id="closeModal" class="btn btn-ghost">Закрыть</button></div>
+      <button id="closeModal" class="btn btn-ghost">Закрыть</button>
     </div>
-    <div class="modal-body">
-      <iframe id="mapFrame" class="map" src="" allowfullscreen="" loading="lazy"></iframe>
-    </div>
+    <div class="modal-body"><iframe id="mapFrame" class="map" src="" allowfullscreen loading="lazy"></iframe></div>
   </div>
 </div>
 
 <script>
-const universities = [
-  {
+const universities = [{
     "id": 1,
     "name": "Nazarbayev University",
-    "city": "Astana (Астана)",
+    "city": "Nur-Sultan (Астана)",
     "type": "государственный / автономный",
     "url3d": "https://www.google.com/maps/embed?pb=!4v111111111",
     "description": "Международный исследовательский университет с англоязычными программами и акцентом на STEM, бизнес и исследования.",
@@ -749,11 +727,11 @@ const universities = [
     "comparison_tags": ["классический","региональный"],
     "source_note": "Приём SKSU — уточнить"
   }
-  ];
+];
 
 const grid = document.getElementById('grid');
 const q = document.getElementById('q');
-const city = document.getElementById('city');
+const region = document.getElementById('region');
 const clearFilters = document.getElementById('clearFilters');
 const modal = document.getElementById('modal');
 const mapFrame = document.getElementById('mapFrame');
@@ -762,181 +740,48 @@ let compareSet = new Set();
 
 function renderList(list){
   grid.innerHTML = '';
-  if(list.length===0){grid.innerHTML='<div style="grid-column:1/-1;padding:20px;background:#fff;border-radius:10px">Ничего не найдено</div>';return;}
+  if(!list.length) return grid.innerHTML='<div style="grid-column:1/-1;padding:20px;background:#fff;border-radius:10px">Ничего не найдено</div>';
   list.forEach(u=>{
     const el = document.createElement('div');
     el.className='card';
     el.innerHTML=`
       <h3>${u.name}</h3>
-      <div class="meta">${u.region} · основан ${u.established} · студенты: ${u.students}</div>
-      <div class="tags">${(u.academic_programs || []).slice(0,3).map(p=>`<span class="tag">${p}</span>`).join('')}</div>
-      <div style="color:var(--muted);font-size:14px;margin-bottom:12px">${u.short}</div>
+      <div class="tags">${(u.academic_programs||[]).slice(0,3).map(p=>`<span class="tag">${p}</span>`).join('')}</div>
       <div class="card-actions">
-        <button class="btn" data-id="${u.id}" data-action="tour" ${u.url3d?'':'disabled'}>3D-тур</button>
+        <button class="btn" data-id="${u.id}" data-action="tour"${u.url3d?'':' disabled'}>3D-тур</button>
         <button class="btn btn-ghost" data-id="${u.id}" data-action="details">Подробнее</button>
         <label class="compare-checkbox"><input type="checkbox" data-id="${u.id}" ${compareSet.has(u.id)?'checked':''}/>Сравнить</label>
-      </div>
-    `;
+      </div>`;
     grid.appendChild(el);
   });
 }
 
-renderList(universities);
-
 function applyFilters(){
   const term=q.value.trim().toLowerCase();
   const r=region.value;
-  const filtered=universities.filter(u=>{
-    if(r&&u.city!==r) return false;
-    if(!term) return true;
-    return (u.name+' '+u.short+' '+u.academic_programs.join(' ')).toLowerCase().includes(term);
-  });
-  renderList(filtered);
+  renderList(universities.filter(u=>
+    (!r || u.city.includes(r)) &&
+    (!term || (u.name+' '+(u.short||'')+' '+u.academic_programs.join(' ')).toLowerCase().includes(term))
+  ));
 }
 
 q.addEventListener('input',applyFilters);
 region.addEventListener('change',applyFilters);
 clearFilters.addEventListener('click',()=>{q.value='';region.value='';applyFilters();});
 
-grid.addEventListener('click', e => {
-  const btn = e.target.closest('button');
-  if (!btn) return;
-  const id = btn.dataset.id;
-  const action = btn.dataset.action;
-  const uni = universities.find(x => x.id === id);
-  if (!uni) return;
-
-  if (action === 'tour') {
-    if (!uni.url3d) { alert('3D-тур не настроен для этого университета.'); return; }
-    modalTitle.textContent = `3D-тур — ${uni.name}`;
-    mapFrame.src = uni.url3d;
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-  } else if (action === 'details') {
-    modalTitle.textContent = uni.name;
-    mapFrame.src = ''; 
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-
-    const body = document.querySelector('.modal-body');
-    body.innerHTML = `
-      <div style="padding:20px;overflow:auto;max-height:70vh">
-        <h2>${uni.name}</h2>
-        <p><strong>Город:</strong> ${uni.city || '—'}</p>
-        <p><strong>Тип:</strong> ${uni.type || '—'}</p>
-        <p><strong>Языки обучения:</strong> ${(uni.languages || []).join(', ') || '—'}</p>
-        <p><strong>Описание:</strong> ${uni.description || 'Описание отсутствует'}</p>
-        <p><strong>Программы:</strong> ${(uni.academic_programs || []).join(', ') || '—'}</p>
-        <p><strong>Стипендии:</strong> ${uni.scholarships || '—'}</p>
-        ${uni.images ? `<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-          ${uni.images.map(img => `<img src="${img}" style="width:150px;border-radius:10px"/>`).join('')}
-        </div>` : ''}
-      </div>
-    `;
-  }
+grid.addEventListener('click',e=>{
+  const btn=e.target.closest('button');
+  if(!btn) return;
+  const uni = universities.find(u=>u.id==btn.dataset.id);
+  if(!uni) return;
+  if(btn.dataset.action==='tour'){ modalTitle.textContent=`3D-тур — ${uni.name}`; mapFrame.src=uni.url3d; modal.classList.add('open'); }
+  if(btn.dataset.action==='details'){ modalTitle.textContent=uni.name; mapFrame.src=''; modal.classList.add('open'); }
 });
 
-document.getElementById('closeModal').addEventListener('click',closeModal);
-modal.addEventListener('click',e=>{if(e.target===modal) closeModal();});
-function closeModal(){modal.classList.remove('open');mapFrame.src='';modal.setAttribute('aria-hidden','true');}
+document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('open'));
 
-grid.addEventListener('change',e=>{
-  const cb=e.target; if(cb.type!=='checkbox') return;
-  const id=cb.dataset.id;
-  if(cb.checked) compareSet.add(id); else compareSet.delete(id);
-  updateCompareArea();
-});
-
-function updateCompareArea() {
-  const ids = Array.from(compareSet);
-  const area = document.getElementById('compareArea');
-  const wrap = document.getElementById('compareTableWrap');
-  if (ids.length === 0) {
-    area.style.display = 'none';
-    wrap.innerHTML = '';
-    return;
-  }
-  area.style.display = 'block';
-
-  const items = universities.filter(u => ids.includes(u.id));
-
-  let html = '<table><thead><tr><th>Атрибут</th>';
-  items.forEach(i => html += `<th>${i.name}</th>`);
-  html += '</tr></thead><tbody>';
-
-  const attrs = [
-    ['Город', 'city'],
-    ['Тип', 'type'],
-    ['Описание', 'description'],
-    ['Программы', 'academic_programs'],
-    ['Приём / требования', 'admissions'],
-    ['Стипендии', 'scholarships'],
-    ['Примерная стоимость', 'tuition_estimate'],
-    ['Языки обучения', 'languages'],
-    ['Теги сравнения', 'comparison_tags'],
-    ['Источник / примечание', 'source_note']
-  ];
-
-  attrs.forEach(a => {
-    html += `<tr><th>${a[0]}</th>`;
-    items.forEach(it => {
-      let val = it[a[1]];
-
-      // Специальная обработка для массивов и объектов
-      if (Array.isArray(val)) val = val.join('<br>');
-      if (typeof val === 'object' && val !== null) {
-        if (a[1] === 'admissions') {
-          val = `
-            Требования: ${val.requirements || '—'}<br>
-            Тесты: ${(val.tests || []).join(', ') || '—'}<br>
-            Документы: ${(val.documents || []).join(', ') || '—'}<br>
-            Сроки: ${val.deadlines || '—'}<br>
-            Порог: ${val.thresholds || '—'}
-          `;
-        } else {
-          val = JSON.stringify(val);
-        }
-      }
-      html += `<td>${val || '—'}</td>`;
-    });
-    html += '</tr>';
-  });
-
-  html += '</tbody></table>';
-  html += `<div style="margin-top:10px;display:flex;gap:8px">
-            <button id="compareOpenAll" class="btn">Открыть 3D каждого</button>
-            <button id="compareClear" class="btn btn-ghost">Очистить сравнение</button>
-           </div>`;
-
-  wrap.innerHTML = html;
-
-  document.getElementById('compareClear').addEventListener('click', () => {
-    compareSet.clear();
-    grid.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
-    updateCompareArea();
-  });
-
-  document.getElementById('compareOpenAll').addEventListener('click', () => {
-    const first = items.find(u => u.url3d);
-    if (first) {
-      modalTitle.textContent = `3D-тур — ${first.name}`;
-      mapFrame.src = first.url3d;
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-    } else alert('У выбранного университета нет 3D-ссылки.');
-  });
-}
-document.getElementById('closeCompare').addEventListener('click',()=>{compareSet.clear();grid.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);updateCompareArea();});
+renderList(universities);
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
