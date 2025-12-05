@@ -45,6 +45,14 @@ iframe.map{width:100%;height:100%;border:0;}
 </head>
 <body>
 
+<div id="chatBot" style="position:fixed;bottom:20px;right:20px;width:320px;background:#fff;border:1px solid #cbd5e1;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.15);font-family:Inter;">
+  <div style="background:#6366f1;color:#fff;padding:12px;font-weight:700;cursor:pointer;" id="chatHeader">Чат-бот</div>
+  <div id="chatBody" style="display:none;padding:12px;height:300px;overflow-y:auto;font-size:14px;color:#1e293b;"></div>
+  <div id="chatInputWrapper" style="display:none;padding:8px;border-top:1px solid #cbd5e1;">
+    <input id="chatInput" type="text" placeholder="Введите вопрос..." style="width:100%;padding:8px;border-radius:8px;border:1px solid #94a3b8;">
+  </div>
+</div>
+
 <header>
   <div class="brand">
     <div class="logo">DH</div>
@@ -864,7 +872,54 @@ grid.addEventListener('click',e=>{
 document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('open'));
 
 renderList(universities);
+const predefinedQA = [
+  {q: "Какие университеты есть в Алматы?", a: "В Алматы есть: Al-Farabi Kazakh National University, Kazakh-British Technical University, Kazakh University of Economics, Finance and International Trade и др."},
+  {q: "Есть ли гранты?", a: "Некоторые университеты предоставляют гранты. Например: Nazarbayev University, Kokshetau State University, L.N. Gumilyov Eurasian National University."},
+  {q: "Сколько стоит обучение в Назарбаев Университете?", a: "Стоимость обучения в Назарбаев Университете около 700 000 тг/год."},
+  {q: "Какие академические программы есть?", a: "Университеты предлагают разные программы, например Computer Science, Engineering, Business, Law, Medicine и др."},
+  {q: "Как поступить в университет?", a: "Поступление через UNT, внутренние экзамены, собеседования и портфолио в зависимости от университета."}
+];
+const chatHeader = document.getElementById('chatHeader');
+const chatBody = document.getElementById('chatBody');
+const chatInputWrapper = document.getElementById('chatInputWrapper');
+const chatInput = document.getElementById('chatInput');
+
+chatHeader.addEventListener('click', () => {
+  const show = chatBody.style.display === 'none';
+  chatBody.style.display = show ? 'block' : 'none';
+  chatInputWrapper.style.display = show ? 'block' : 'none';
+});
+
+function addMessage(text, from='bot') {
+  const msg = document.createElement('div');
+  msg.style.marginBottom = '8px';
+  msg.style.padding = '6px 10px';
+  msg.style.borderRadius = '8px';
+  msg.style.background = from==='bot' ? '#eef2ff' : '#dbeafe';
+  msg.textContent = text;
+  chatBody.appendChild(msg);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// Обработчик ввода
+chatInput.addEventListener('keypress', e => {
+  if(e.key==='Enter' && chatInput.value.trim()!==''){
+    const question = chatInput.value.trim();
+    addMessage(question,'user');
+
+    // Ищем ответ
+    const found = predefinedQA.find(item => item.q.toLowerCase() === question.toLowerCase());
+    if(found){
+      addMessage(found.a,'bot');
+    } else {
+      addMessage("Извини, я могу отвечать только на ограниченные вопросы.",'bot');
+    }
+
+    chatInput.value='';
+  }
+});
 </script>
 
 </body>
 </html>
+
