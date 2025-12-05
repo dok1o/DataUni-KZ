@@ -731,7 +731,7 @@ const universities = [{
 
 const grid = document.getElementById('grid');
 const q = document.getElementById('q');
-const region = document.getElementById('region');
+const city = document.getElementById('city');
 const clearFilters = document.getElementById('clearFilters');
 const modal = document.getElementById('modal');
 const mapFrame = document.getElementById('mapFrame');
@@ -758,7 +758,7 @@ function renderList(list){
 
 function applyFilters(){
   const term=q.value.trim().toLowerCase();
-  const r=region.value;
+  const r=city.value;
   renderList(universities.filter(u=>
     (!r || u.city.includes(r)) &&
     (!term || (u.name+' '+(u.short||'')+' '+u.academic_programs.join(' ')).toLowerCase().includes(term))
@@ -766,8 +766,8 @@ function applyFilters(){
 }
 
 q.addEventListener('input',applyFilters);
-region.addEventListener('change',applyFilters);
-clearFilters.addEventListener('click',()=>{q.value='';region.value='';applyFilters();});
+city.addEventListener('change',applyFilters);
+clearFilters.addEventListener('click',()=>{q.value='';city.value='';applyFilters();});
 
 grid.addEventListener('click',e=>{
   const btn=e.target.closest('button');
@@ -785,3 +785,4 @@ renderList(universities);
 
 </body>
 </html>
+
