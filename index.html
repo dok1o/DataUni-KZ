@@ -663,46 +663,53 @@
     const promptInput = document.getElementById("prompt");
     const messagesDiv = document.getElementById("messages");
 
-    sendBtn.addEventListener("click", async () => {
-      const prompt = promptInput.value.trim();
-      if (!prompt) return;
+const sendBtn = document.getElementById("sendChat");
+const promptInput = document.getElementById("chatInput");
+const messagesDiv = document.getElementById("chatMessages");
 
-      // Показываем сообщение пользователя
-      const userMsg = document.createElement("div");
-      userMsg.className = "message user";
-      userMsg.textContent = prompt;
-      messagesDiv.appendChild(userMsg);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+sendBtn.addEventListener("click", async () => {
+  const prompt = promptInput.value.trim();
+  if (!prompt) return;
 
-      promptInput.value = "";
+  // Сообщение пользователя
+  const userMsg = document.createElement("div");
+  userMsg.textContent = prompt;
+  userMsg.style.textAlign = "right";
+  userMsg.style.color = "#1a73e8";
+  messagesDiv.appendChild(userMsg);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-      try {
-        const response = await fetch("https://datauni-kz.onrender.com/api/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt })
-        });
-        const data = await response.json();
+  promptInput.value = "";
 
-        const botMsg = document.createElement("div");
-        botMsg.className = "message bot";
-        botMsg.textContent = data.result;
-        messagesDiv.appendChild(botMsg);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-      } catch (err) {
-        const errorMsg = document.createElement("div");
-        errorMsg.className = "message bot";
-        errorMsg.textContent = "Ошибка: " + err.message;
-        messagesDiv.appendChild(errorMsg);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-      }
+  try {
+    const response = await fetch("https://datauni-kz.onrender.com/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
     });
+    const data = await response.json();
 
-    // Отправка по Enter
-    promptInput.addEventListener("keypress", function(e) {
-      if (e.key === 'Enter') sendBtn.click();
-    });
+    const botMsg = document.createElement("div");
+    botMsg.textContent = data.result;
+    botMsg.style.textAlign = "left";
+    botMsg.style.color = "#333";
+    messagesDiv.appendChild(botMsg);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  } catch (err) {
+    const errorMsg = document.createElement("div");
+    errorMsg.textContent = "Ошибка: " + err.message;
+    errorMsg.style.color = "red";
+    messagesDiv.appendChild(errorMsg);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+});
+
+// Отправка по Enter
+promptInput.addEventListener("keypress", function(e) {
+  if (e.key === 'Enter') sendBtn.click();
+});
 </script>
 </body>
 </html>
+
 
