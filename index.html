@@ -738,6 +738,89 @@ const mapFrame = document.getElementById('mapFrame');
 const modalTitle = document.getElementById('modalTitle');
 let compareSet = new Set();
 
+function updateCompareArea() {
+  const ids = Array.from(compareSet);
+  const area = document.getElementById('compareArea');
+  const wrap = document.getElementById('compareTableWrap');
+
+  if (ids.length === 0) {
+    area.style.display = 'none';
+    wrap.innerHTML = '';
+    return;
+  }
+
+  area.style.display = 'block';
+
+  const items = universities.filter(u => ids.includes(u.id));
+  let html = '<table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse;width:100%"><thead><tr><th>Атрибут</th>';
+  items.forEach(i => html += `<th>${i.name}</th>`);
+  html += '</tr></thead><tbody>';
+
+  const attrs = [
+    ['Регион', 'city'],
+    ['Тип', 'type'],
+    ['Описание', 'description'],
+    ['Программы', 'academic_programs'],
+    ['Приём', 'admissions'],
+    ['Стипендии', 'scholarships'],
+    ['Языки', 'languages'],
+    ['3D-ссылка', 'url3d']
+  ];
+
+  attrs.forEach(([label, key]) => {
+    html += `<tr><th>${label}</th>`;
+    items.forEach(it => {
+      let val = it[key];
+
+      if (key === 'academic_programs' || key === 'languages') {
+        val = Array.isArray(val) ? val.join('<br>') : '—';
+      } else if (key === 'admissions') {
+        val = val
+          ? `Требования: ${val.requirements || '—'}<br>
+             Тесты: ${(val.tests || []).join(', ') || '—'}<br>
+             Документы: ${(val.documents || []).join(', ') || '—'}<br>
+             Сроки: ${val.deadlines || '—'}<br>
+             Порог: ${val.thresholds || '—'}`
+          : '—';
+      } else if (key === 'url3d') {
+        val = val ? `<a href="${val}" target="_blank">смотреть</a>` : '—';
+      }
+
+      html += `<td>${val || '—'}</td>`;
+    });
+    html += '</tr>';
+  });
+
+  html += '</tbody></table>';
+
+  html += `
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button id="compareOpenAll" class="btn">Открыть 3D каждого</button>
+      <button id="compareClear" class="btn btn-ghost">Очистить сравнение</button>
+    </div>`;
+
+  wrap.innerHTML = html;
+
+  document.getElementById('compareClear').addEventListener('click', () => {
+    compareSet.clear();
+    grid.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+    updateCompareArea();
+  });
+
+  document.getElementById('compareOpenAll').addEventListener('click', () => {
+    const first3D = items.find(u => u.url3d);
+    if (first3D) {
+      modalTitle.textContent = `3D-тур — ${first3D.name}`;
+      mapFrame.src = first3D.url3d;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    } else {
+      alert('У выбранного университета нет 3D-ссылки.');
+    }
+  });
+}
+
+  
 function renderList(list){
   grid.innerHTML = '';
   if(!list.length) return grid.innerHTML='<div style="grid-column:1/-1;padding:20px;background:#fff;border-radius:10px">Ничего не найдено</div>';
@@ -785,5 +868,6 @@ renderList(universities);
 
 </body>
 </html>
+
 
 
