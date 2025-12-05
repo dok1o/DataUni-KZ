@@ -798,20 +798,42 @@ q.addEventListener('input',applyFilters);
 region.addEventListener('change',applyFilters);
 clearFilters.addEventListener('click',()=>{q.value='';region.value='';applyFilters();});
 
-grid.addEventListener('click',e=>{
-  const btn=e.target.closest('button');
-  if(!btn) return;
-  const id=btn.dataset.id;
-  const action=btn.dataset.action;
-  const uni=universities.find(x=>x.id===id);
-  if(action==='tour'){
-    if(!uni.url3d){alert('3D-тур не настроен для этого университета.'); return;}
-    modalTitle.textContent=`3D-тур — ${uni.name}`;
-    mapFrame.src=uni.url3d;
+grid.addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const action = btn.dataset.action;
+  const uni = universities.find(x => x.id === id);
+  if (!uni) return;
+
+  if (action === 'tour') {
+    if (!uni.url3d) { alert('3D-тур не настроен для этого университета.'); return; }
+    modalTitle.textContent = `3D-тур — ${uni.name}`;
+    mapFrame.src = uni.url3d;
     modal.classList.add('open');
-    modal.setAttribute('aria-hidden','false');
-  } else if(action==='details'){
-    alert(`${uni.name}\n\nПрограммы:\n- ${uni.academic_programs.join('\n- ')}\n\nКонтакт: ${uni.contact}`);
+    modal.setAttribute('aria-hidden', 'false');
+  } else if (action === 'details') {
+    // наполняем modal контентом про университет
+    modalTitle.textContent = uni.name;
+    mapFrame.src = ''; // отключаем 3D-тур
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+
+    const body = document.querySelector('.modal-body');
+    body.innerHTML = `
+      <div style="padding:20px;overflow:auto;max-height:70vh">
+        <h2>${uni.name}</h2>
+        <p><strong>Город:</strong> ${uni.city || '—'}</p>
+        <p><strong>Тип:</strong> ${uni.type || '—'}</p>
+        <p><strong>Языки обучения:</strong> ${(uni.languages || []).join(', ') || '—'}</p>
+        <p><strong>Описание:</strong> ${uni.description || 'Описание отсутствует'}</p>
+        <p><strong>Программы:</strong> ${(uni.academic_programs || []).join(', ') || '—'}</p>
+        <p><strong>Стипендии:</strong> ${uni.scholarships || '—'}</p>
+        ${uni.images ? `<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+          ${uni.images.map(img => `<img src="${img}" style="width:150px;border-radius:10px"/>`).join('')}
+        </div>` : ''}
+      </div>
+    `;
   }
 });
 
@@ -910,6 +932,7 @@ document.getElementById('closeCompare').addEventListener('click',()=>{compareSet
 
 </body>
 </html>
+
 
 
 
