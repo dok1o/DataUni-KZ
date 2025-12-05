@@ -659,9 +659,6 @@
 
   // Изначальный рендер всего списка
   renderGrid(universities);
-  const sendBtn = document.getElementById("send");
-    const promptInput = document.getElementById("prompt");
-    const messagesDiv = document.getElementById("messages");
 
 const sendBtn = document.getElementById("sendChat");
 const promptInput = document.getElementById("chatInput");
@@ -671,11 +668,9 @@ sendBtn.addEventListener("click", async () => {
   const prompt = promptInput.value.trim();
   if (!prompt) return;
 
-  // Сообщение пользователя
   const userMsg = document.createElement("div");
   userMsg.textContent = prompt;
-  userMsg.style.textAlign = "right";
-  userMsg.style.color = "#1a73e8";
+  userMsg.className = "message user";
   messagesDiv.appendChild(userMsg);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
@@ -691,25 +686,29 @@ sendBtn.addEventListener("click", async () => {
 
     const botMsg = document.createElement("div");
     botMsg.textContent = data.result;
-    botMsg.style.textAlign = "left";
-    botMsg.style.color = "#333";
+    botMsg.className = "message bot";
     messagesDiv.appendChild(botMsg);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   } catch (err) {
     const errorMsg = document.createElement("div");
     errorMsg.textContent = "Ошибка: " + err.message;
+    errorMsg.className = "message bot";
     errorMsg.style.color = "red";
     messagesDiv.appendChild(errorMsg);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 });
 
-// Отправка по Enter
 promptInput.addEventListener("keypress", function(e) {
   if (e.key === 'Enter') sendBtn.click();
+});
+
+document.getElementById("closeChat").addEventListener("click", () => {
+  document.getElementById("chatBot").style.display = "none";
 });
 </script>
 </body>
 </html>
+
 
 
