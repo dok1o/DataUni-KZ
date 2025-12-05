@@ -826,38 +826,88 @@ grid.addEventListener('change',e=>{
   updateCompareArea();
 });
 
-function updateCompareArea(){
-  const ids=Array.from(compareSet);
-  const area=document.getElementById('compareArea');
-  const wrap=document.getElementById('compareTableWrap');
-  if(ids.length===0){area.style.display='none';wrap.innerHTML='';return;}
-  area.style.display='block';
-  const items=universities.filter(u=>ids.includes(u.id));
-  let html='<table><thead><tr><th>Атрибут</th>';
-  items.forEach(i=>html+=`<th>${i.name}</th>`);html+='</tr></thead><tbody>';
-  const attrs=[['Регион','region'],['Год основания','established'],['Студентов','students'],['Коротко','short'],['Программы','programs'],['Контакт','contact']];
-  attrs.forEach(a=>{
-    html+=`<tr><th>${a[0]}</th>`;
-    items.forEach(it=>{
-      let val=it[a[1]];
-      if(Array.isArray(val)) val=val.join('<br>');
-      html+=`<td>${val||'—'}</td>`;
+function updateCompareArea() {
+  const ids = Array.from(compareSet);
+  const area = document.getElementById('compareArea');
+  const wrap = document.getElementById('compareTableWrap');
+  if (ids.length === 0) {
+    area.style.display = 'none';
+    wrap.innerHTML = '';
+    return;
+  }
+  area.style.display = 'block';
+
+  const items = universities.filter(u => ids.includes(u.id));
+
+  let html = '<table><thead><tr><th>Атрибут</th>';
+  items.forEach(i => html += `<th>${i.name}</th>`);
+  html += '</tr></thead><tbody>';
+
+  const attrs = [
+    ['Город', 'city'],
+    ['Тип', 'type'],
+    ['Описание', 'description'],
+    ['Программы', 'academic_programs'],
+    ['Приём / требования', 'admissions'],
+    ['Стипендии', 'scholarships'],
+    ['Примерная стоимость', 'tuition_estimate'],
+    ['Языки обучения', 'languages'],
+    ['Теги сравнения', 'comparison_tags'],
+    ['Источник / примечание', 'source_note']
+  ];
+
+  attrs.forEach(a => {
+    html += `<tr><th>${a[0]}</th>`;
+    items.forEach(it => {
+      let val = it[a[1]];
+
+      // Специальная обработка для массивов и объектов
+      if (Array.isArray(val)) val = val.join('<br>');
+      if (typeof val === 'object' && val !== null) {
+        if (a[1] === 'admissions') {
+          val = `
+            Требования: ${val.requirements || '—'}<br>
+            Тесты: ${(val.tests || []).join(', ') || '—'}<br>
+            Документы: ${(val.documents || []).join(', ') || '—'}<br>
+            Сроки: ${val.deadlines || '—'}<br>
+            Порог: ${val.thresholds || '—'}
+          `;
+        } else {
+          val = JSON.stringify(val);
+        }
+      }
+      html += `<td>${val || '—'}</td>`;
     });
-    html+='</tr>';
+    html += '</tr>';
   });
-  html+='</tbody></table>';
-  html+=`<div style="margin-top:10px;display:flex;gap:8px"><button id="compareOpenAll" class="btn">Открыть 3D каждого</button><button id="compareClear" class="btn btn-ghost">Очистить сравнение</button></div>`;
-  wrap.innerHTML=html;
-  document.getElementById('compareClear').addEventListener('click',()=>{compareSet.clear();grid.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);updateCompareArea();});
-  document.getElementById('compareOpenAll').addEventListener('click',()=>{
-    const first=items.find(u=>u.url3d);
-    if(first){modalTitle.textContent=`3D-тур — ${first.name}`;mapFrame.src=first.url3d;modal.classList.add('open');modal.setAttribute('aria-hidden','false');}
-    else alert('У выбранного университета нет 3D-ссылки.');
+
+  html += '</tbody></table>';
+  html += `<div style="margin-top:10px;display:flex;gap:8px">
+            <button id="compareOpenAll" class="btn">Открыть 3D каждого</button>
+            <button id="compareClear" class="btn btn-ghost">Очистить сравнение</button>
+           </div>`;
+
+  wrap.innerHTML = html;
+
+  document.getElementById('compareClear').addEventListener('click', () => {
+    compareSet.clear();
+    grid.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+    updateCompareArea();
+  });
+
+  document.getElementById('compareOpenAll').addEventListener('click', () => {
+    const first = items.find(u => u.url3d);
+    if (first) {
+      modalTitle.textContent = `3D-тур — ${first.name}`;
+      mapFrame.src = first.url3d;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    } else alert('У выбранного университета нет 3D-ссылки.');
   });
 }
-
 document.getElementById('closeCompare').addEventListener('click',()=>{compareSet.clear();grid.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);updateCompareArea();});
 </script>
 
 </body>
 </html>
+
