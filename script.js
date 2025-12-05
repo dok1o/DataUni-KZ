@@ -3,7 +3,7 @@ document.getElementById("send").addEventListener("click", async () => {
   const resDiv = document.getElementById("response");
 
   try {
-    const response = await fetch("https://YOUR_BACKEND_URL/api/generate", {
+    const response = await fetch("https://datauni-kz.onrender.com", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt })
@@ -13,4 +13,5 @@ document.getElementById("send").addEventListener("click", async () => {
   } catch (err) {
     resDiv.textContent = "Ошибка: " + err.message;
   }
+
 });
