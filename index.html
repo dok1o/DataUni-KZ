@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Каталог ВУЗов РК — DataHub</title>
+<style>
+  :root{
+    --bg:#eef4ff; --card:#f7fbff; --accent:#3578ff; --accent-2:#2b6fd8;
+    --muted:#7f8fa6; --glass: rgba(255,255,255,0.35);
+    --radius:18px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,var(--bg),#f3f8ff);color:#123;line-height:1.45}
+  header{padding:28px 20px;display:flex;align-items:center;gap:18px;justify-content:space-between}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+  h1{margin:0;font-size:20px}
+  .subtitle{color:var(--muted);font-size:13px}
+  .container{max-width:1150px;margin:18px auto;padding:18px}
+  .hero{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+  .panel{background:linear-gradient(180deg,rgba(255,255,255,0.15),rgba(255,255,255,0.05));border-radius:var(--radius);padding:28px;color:#fff;min-height:240px;position:relative;overflow:hidden}
+  .panel h2{font-size:42px;margin:0 0 8px 0;font-weight:700}
+  .panel small{display:block;color:rgba(255,255,255,0.85);opacity:0.95}
+  /* different shades */
+  .p1{background:linear-gradient(180deg,#6fa8ff,#77a6ff)}
+  .p2{background:linear-gradient(180deg,#4f82ff,#3a6df5)}
+  .p3{background:linear-gradient(180deg,#2d58e8,#1f45cc)}
+  /* content area */
+  .controls{margin:18px 0;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .search{flex:1;min-width:220px}
+  input[type="search"], select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #e0e8ff;background:white;font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:14px}
+  .card{background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(18,34,80,0.04);box-shadow:0 6px 18px rgba(15,30,80,0.04)}
+  .card h3{margin:0 0 6px 0;font-size:18px}
+  .meta{color:var(--muted);font-size:13px;margin-bottom:8px}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .tag{background:#eef5ff;padding:6px 8px;border-radius:999px;font-size:12px;color:#2357d4}
+  .card-actions{display:flex;gap:8px;align-items:center}
+  .btn{padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:white;cursor:pointer}
+  .btn.ghost{background:transparent;border:1px solid #ddd;color:#123}
+  .compare-checkbox{margin-left:auto;display:flex;align-items:center;gap:6px;color:var(--muted)}
+  /* 3D embed modal */
+  .modal{position:fixed;inset:0;background:rgba(6,10,30,0.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+  .modal.open{display:flex}
+  .modal-content{width:100%;max-width:1100px;background:white;border-radius:12px;overflow:hidden}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f0f0f6}
+  .modal-body{height:70vh}
+  iframe.map{width:100%;height:100%;border:0}
+  /* compare sheet */
+  .compare-sheet{margin-top:18px;background:#fff;padding:14px;border-radius:12px;border:1px solid #eef3ff}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:8px;border-bottom:1px solid #f2f6ff;text-align:left}
+  th{background:#fbfdff}
+  /* small screens */
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;gap:12px}
+    .panel{min-height:160px;padding:18px}
+    .panel h2{font-size:34px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">DH</div>
+    <div>
+      <h1>DataHub ВУЗ-ов РК</h1>
+      <div class="subtitle">общий каталог университетов — кратко и наглядно</div>
+    </div>
+  </div>
+  <div style="min-width:180px;text-align:right">
+    <small class="subtitle">Версия демо</small>
+  </div>
+</header>
+
+<main class="container">
+  <!-- hero panels similar to image -->
+  <section class="hero" aria-label="главные разделы">
+    <div class="panel p1">
+      <h2>1</h2>
+      <small>Об университете</small>
+      <p style="margin-top:14px;opacity:0.95">Информация о миссии, истории, лидерстве и достижениях университета. Добавляй фото и краткие факты.</p>
+    </div>
+    <div class="panel p2">
+      <h2>2</h2>
+      <small>Академ. программы</small>
+      <p style="margin-top:14px;opacity:0.95">Список и подробности по программам: продолжительность, форма обучения, стоимость, дисциплины.</p>
+    </div>
+    <div class="panel p3">
+      <h2>3</h2>
+      <small>Приём и поступление</small>
+      <p style="margin-top:14px;opacity:0.95">Требования, сроки подачи, гранты и стипендии.</p>
+    </div>
+  </section>
+
+  <!-- controls -->
+  <section style="margin-top:18px">
+    <div class="controls">
+      <div class="search">
+        <input id="q" type="search" placeholder="Поиск университета (название, город, программа)" />
+      </div>
+      <div style="width:180px">
+        <select id="region">
+          <option value="">Все регионы</option>
+          <option value="Алматы">Алматы</option>
+          <option value="Нур-Султан">Нур-Султан</option>
+          <option value="Шымкент">Шымкент</option>
+        </select>
+      </div>
+      <div>
+        <button id="clearFilters" class="btn btn-ghost">Сбросить</button>
+      </div>
+    </div>
+
+    <!-- grid of universities -->
+    <div id="grid" class="grid" aria-live="polite"></div>
+
+    <!-- compare area -->
+    <div id="compareArea" class="compare-sheet" style="display:none">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        <strong>Сравнение выбранных ВУЗов</strong>
+        <button id="closeCompare" class="btn" style="margin-left:auto">Закрыть</button>
+      </div>
+      <div id="compareTableWrap"></div>
+    </div>
+  </section>
+</main>
+
+<!-- modal for 3D tour -->
+<div id="modal" class="modal" role="dialog" aria-hidden="true">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div><strong id="modalTitle">3D-тур</strong></div>
+      <div>
+        <button id="closeModal" class="btn btn-ghost">Закрыть</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <iframe id="mapFrame" class="map" src="" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====== Пример данных (замени на свои реальные данные или подключи сервер/API) ====== */
+const universities = [
+  {
+    id: "uni1",
+    name: "Национальный университет Алматы",
+    short: "Крупный государственный университет",
+    region: "Алматы",
+    programs: ["Бакалавриат: IT", "Магистратура: Экономика"],
+    students: "18 000",
+    url3d: "https://www.google.com/maps/embed?pb=!4v000000000", // замените на реальную встроенную ссылку Google Maps/StreetView
+    established: "1954",
+    contact: "info@uni-almaty.kz"
+  },
+  {
+    id: "uni2",
+    name: "Технический университет Нур-Султан",
+    short: "Инженерные и технические программы",
+    region: "Нур-Султан",
+    programs: ["Бакалавриат: Машиностроение","Магистратура: Энергетика"],
+    students: "9 200",
+    url3d: "https://www.google.com/maps/embed?pb=!4v111111111",
+    established: "1972",
+    contact: "admissions@tech-ns.kz"
+  },
+  {
+    id: "uni3",
+    name: "Международный кампус Шымкент",
+    short: "Международные программы, обмен",
+    region: "Шымкент",
+    programs: ["Бакалавриат: Менеджмент","Эразмус обмен"],
+    students: "4 500",
+    url3d: "https://www.google.com/maps/embed?pb=!4v222222222",
+    established: "2004",
+    contact: "hello@int-shym.kz"
+  }
+];
+
+/* ====== UI логика ====== */
+const grid = document.getElementById('grid');
+const q = document.getElementById('q');
+const region = document.getElementById('region');
+const clearFilters = document.getElementById('clearFilters');
+const modal = document.getElementById('modal');
+const mapFrame = document.getElementById('mapFrame');
+const modalTitle = document.getElementById('modalTitle');
+
+let compareSet = new Set();
+
+function renderList(list){
+  grid.innerHTML = '';
+  if(list.length === 0){
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;background:#fff;border-radius:10px">Ничего не найдено</div>';
+    return;
+  }
+  list.forEach(u=>{
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = `
+      <h3>${u.name}</h3>
+      <div class="meta">${u.region} · основан ${u.established} · студенты: ${u.students}</div>
+      <div class="tags">${u.programs.slice(0,3).map(p=>`<span class="tag">${p}</span>`).join('')}</div>
+      <div style="color:var(--muted);font-size:14px;margin-bottom:12px">${u.short}</div>
+      <div class="card-actions">
+        <button class="btn" data-id="${u.id}" data-action="tour">3D-тур</button>
+        <button class="btn btn-ghost" data-id="${u.id}" data-action="details">Подробнее</button>
+        <label class="compare-checkbox"><input type="checkbox" data-id="${u.id}" ${compareSet.has(u.id)?'checked':''}/>Сравнить</label>
+      </div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+// initial render
+renderList(universities);
+
+/* filters */
+function applyFilters(){
+  const term = q.value.trim().toLowerCase();
+  const r = region.value;
+  const filtered = universities.filter(u=>{
+    if(r && u.region !== r) return false;
+    if(!term) return true;
+    return (u.name + ' ' + u.short + ' ' + u.programs.join(' ')).toLowerCase().includes(term);
+  });
+  renderList(filtered);
+}
+
+/* events */
+q.addEventListener('input', applyFilters);
+region.addEventListener('change', applyFilters);
+clearFilters.addEventListener('click', ()=>{
+  q.value=''; region.value=''; applyFilters();
+});
+
+/* delegate card buttons */
+grid.addEventListener('click', (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  const id = btn.dataset.id;
+  const action = btn.dataset.action;
+  if(action === 'tour'){
+    const uni = universities.find(x=>x.id===id);
+    if(!uni || !uni.url3d){
+      alert('3D-тур не настроен для этого университета.');
+      return;
+    }
+    modalTitle.textContent = `3D-тур — ${uni.name}`;
+    // IMPORTANT: здесь ожидается полноценная embed-ссылка Google Maps/Street View
+    mapFrame.src = uni.url3d;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+  } else if(action === 'details'){
+    const uni = universities.find(x=>x.id===id);
+    if(!uni) return;
+    alert(`${uni.name}\n\nПрограммы:\n- ${uni.programs.join('\n- ')}\n\nКонтакт: ${uni.contact}`);
+  }
+});
+
+/* close modal */
+document.getElementById('closeModal').addEventListener('click', closeModal);
+modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+function closeModal(){
+  modal.classList.remove('open');
+  mapFrame.src = ''; // stop loading
+  modal.setAttribute('aria-hidden','true');
+}
+
+/* compare checkboxes */
+grid.addEventListener('change', (e)=>{
+  const cb = e.target;
+  if(cb.type !== 'checkbox') return;
+  const id = cb.dataset.id;
+  if(cb.checked) compareSet.add(id); else compareSet.delete(id);
+  updateCompareArea();
+});
+
+function updateCompareArea(){
+  const ids = Array.from(compareSet);
+  const area = document.getElementById('compareArea');
+  const wrap = document.getElementById('compareTableWrap');
+  if(ids.length === 0){
+    area.style.display = 'none';
+    wrap.innerHTML = '';
+    return;
+  }
+  area.style.display = 'block';
+
+  // build comparison table
+  const items = universities.filter(u=>ids.includes(u.id));
+  let html = '<table><thead><tr><th>Атрибут</th>';
+  items.forEach(i=> html += `<th>${i.name}</th>`);
+  html += '</tr></thead><tbody>';
+  const attrs = [
+    ['Регион', 'region'],
+    ['Год основания', 'established'],
+    ['Студентов', 'students'],
+    ['Коротко', 'short'],
+    ['Программы', 'programs'],
+    ['Контакт', 'contact']
+  ];
+  attrs.forEach(a=>{
+    html += `<tr><th>${a[0]}</th>`;
+    items.forEach(it=>{
+      let val = it[a[1]];
+      if(Array.isArray(val)) val = val.join('<br>');
+      html += `<td>${val || '—'}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  html += `<div style="margin-top:10px;display:flex;gap:8px"><button id="compareOpenAll" class="btn">Открыть 3D каждого</button><button id="compareClear" class="btn btn-ghost">Очистить сравнение</button></div>`;
+  wrap.innerHTML = html;
+
+  document.getElementById('compareClear').addEventListener('click', ()=>{
+    compareSet.clear();
+    // uncheck checkboxes
+    grid.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);
+    updateCompareArea();
+  });
+
+  document.getElementById('compareOpenAll').addEventListener('click', ()=>{
+    // откроем первый 3D (показываем первый по очереди)
+    if(items[0] && items[0].url3d){
+      modalTitle.textContent = `3D-тур — ${items[0].name}`;
+      mapFrame.src = items[0].url3d;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+    } else {
+      alert('У выбранного университета нет 3D-ссылки.');
+    }
+  });
+}
+
+document.getElementById('closeCompare').addEventListener('click', ()=>{
+  compareSet.clear();
+  grid.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);
+  updateCompareArea();
+});
+
+</script>
+
+</body>
+</html>
