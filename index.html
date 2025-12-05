@@ -753,7 +753,7 @@ const universities = [
 
 const grid = document.getElementById('grid');
 const q = document.getElementById('q');
-const region = document.getElementById('city');
+const city = document.getElementById('city');
 const clearFilters = document.getElementById('clearFilters');
 const modal = document.getElementById('modal');
 const mapFrame = document.getElementById('mapFrame');
@@ -787,7 +787,7 @@ function applyFilters(){
   const term=q.value.trim().toLowerCase();
   const r=region.value;
   const filtered=universities.filter(u=>{
-    if(r&&u.region!==r) return false;
+    if(r&&u.city!==r) return false;
     if(!term) return true;
     return (u.name+' '+u.short+' '+u.academic_programs.join(' ')).toLowerCase().includes(term);
   });
@@ -931,6 +931,7 @@ document.getElementById('closeCompare').addEventListener('click',()=>{compareSet
 
 </body>
 </html>
+
 
 
 
