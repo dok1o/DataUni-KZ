@@ -148,6 +148,63 @@
     color: #64748b;
     font-size: 13px;
   }
+  {
+      font-family: Arial, sans-serif;
+      background: #eef4ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .chat-container {
+      background: #fff;
+      width: 400px;
+      max-width: 90%;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      min-height: 200px;
+    }
+    .message {
+      margin-bottom: 10px;
+    }
+    .message.user {
+      text-align: right;
+      color: #1a73e8;
+    }
+    .message.bot {
+      text-align: left;
+      color: #333;
+    }
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      flex: 1;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #1a73e8;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
   @media (max-width: 800px) {
     .panel {
       position: fixed;
@@ -215,7 +272,20 @@
 <footer>
   Сделано для демонстрации — можно расширить: отзывы, рейтинги, интеграция 3D-туров и CMS.
 </footer>
+  <!-- Чат-бот -->
+<div id="chatBot" style="position:fixed;bottom:20px;right:20px;width:350px;max-width:90%;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.2);overflow:hidden;display:flex;flex-direction:column;z-index:999">
+  <div style="background:#1a73e8;color:#fff;padding:10px;font-weight:bold;display:flex;justify-content:space-between;align-items:center">
+    Чат с GPT
+    <button id="closeChat" style="background:transparent;border:none;color:white;font-size:18px;cursor:pointer">✕</button>
+  </div>
+  <div id="chatMessages" style="flex:1;padding:10px;overflow-y:auto;min-height:200px"></div>
+  <div style="display:flex;gap:10px;padding:10px;border-top:1px solid #ccc">
+    <input id="chatInput" type="text" placeholder="Введите сообщение..." style="flex:1;padding:8px;border-radius:8px;border:1px solid #ccc">
+    <button id="sendChat" style="padding:8px 12px;border:none;background:#1a73e8;color:white;border-radius:8px;cursor:pointer">Отправить</button>
+  </div>
+</div>
 <script>
+  
   const universities = [
     {id:1,name:"Nazarbayev University",city:"Нур‑Султан",desc:"Исследовательский университет с международным фокусом.",
       programs:["Computer Science (BSc)","Engineering (BEng)","Business (MBA)"],
@@ -589,6 +659,50 @@
 
   // Изначальный рендер всего списка
   renderGrid(universities);
+  const sendBtn = document.getElementById("send");
+    const promptInput = document.getElementById("prompt");
+    const messagesDiv = document.getElementById("messages");
+
+    sendBtn.addEventListener("click", async () => {
+      const prompt = promptInput.value.trim();
+      if (!prompt) return;
+
+      // Показываем сообщение пользователя
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.textContent = prompt;
+      messagesDiv.appendChild(userMsg);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      promptInput.value = "";
+
+      try {
+        const response = await fetch("https://datauni-kz.onrender.com/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
+        const data = await response.json();
+
+        const botMsg = document.createElement("div");
+        botMsg.className = "message bot";
+        botMsg.textContent = data.result;
+        messagesDiv.appendChild(botMsg);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      } catch (err) {
+        const errorMsg = document.createElement("div");
+        errorMsg.className = "message bot";
+        errorMsg.textContent = "Ошибка: " + err.message;
+        messagesDiv.appendChild(errorMsg);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+    });
+
+    // Отправка по Enter
+    promptInput.addEventListener("keypress", function(e) {
+      if (e.key === 'Enter') sendBtn.click();
+    });
 </script>
 </body>
 </html>
+
