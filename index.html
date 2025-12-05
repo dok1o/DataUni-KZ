@@ -769,7 +769,7 @@ function renderList(list){
     el.innerHTML=`
       <h3>${u.name}</h3>
       <div class="meta">${u.region} · основан ${u.established} · студенты: ${u.students}</div>
-      <div class="tags">${u.academic_programs.slice(0,3).map(p=>`<span class="tag">${p}</span>`).join('')}</div>
+      <div class="tags">${(u.academic_programs || []).slice(0,3).map(p=>`<span class="tag">${p}</span>`).join('')}</div>
       <div style="color:var(--muted);font-size:14px;margin-bottom:12px">${u.short}</div>
       <div class="card-actions">
         <button class="btn" data-id="${u.id}" data-action="tour" ${u.url3d?'':'disabled'}>3D-тур</button>
@@ -910,6 +910,7 @@ document.getElementById('closeCompare').addEventListener('click',()=>{compareSet
 
 </body>
 </html>
+
 
 
 
