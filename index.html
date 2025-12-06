@@ -880,37 +880,18 @@ function renderAdmission(u) {
     </div>
   `;
 }
-
-  function renderTour(u){
+function renderTour(u) {
   if (u.name === "Казахский национальный университет имени аль-Фараби") {
     tabContent.innerHTML = `
       <div><strong>3D тур</strong></div>
       <div style="margin-top:8px">
         <a href="https://3dtour.kaznu.kz" target="_blank" class="btn">Открыть 3D тур Al-Farabi</a>
-      </div>`;
+      </div>
+    `;
     return;
   }
-  const universitiesWithTourUrl = [
-    "Nazarbayev University",
-    "Казахско-британский технический университет",
-    "Евразийский национальный университет имени Л.Н. Гумилева"
-  ];
-
-  if (universitiesWithTourUrl.includes(u.name) && u.tourUrl) {
-    const tourUrlClean = u.tourUrl.replace(/^src="?|"?$/g, '');
-    tabContent.innerHTML = `
-      <div><strong>3D тур</strong></div>
-      <iframe 
-        width="100%" 
-        height="320" 
-        frameborder="0" 
-        style="border:0;border-radius:8px;margin-top:8px" 
-        src="${tourUrlClean}" 
-        allowfullscreen>
-      </iframe>`;
-    return;
-  }
-  tabContent.innerHTML = `<div><strong>3D тур</strong></div>
+  tabContent.innerHTML = `
+    <div><strong>3D тур</strong></div>
     <iframe 
       width="100%" 
       height="320" 
@@ -918,7 +899,8 @@ function renderAdmission(u) {
       style="border:0;border-radius:8px;margin-top:8px" 
       src="https://maps.google.com/maps?q=${encodeURIComponent(u.name + ' ' + u.city)}&t=k&output=embed" 
       allowfullscreen>
-    </iframe>`;
+    </iframe>
+  `;
 }
 
   function applyFilters(){
@@ -1034,3 +1016,4 @@ promptInput.addEventListener("keypress", (e) => {
 </script>
 </body>
 </html>
+
