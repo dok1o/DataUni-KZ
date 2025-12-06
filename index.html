@@ -820,14 +820,33 @@
   }
 
   function renderAbout(u){
-    tabContent.innerHTML = `
-      <div style="font-size:14px;color:#64748b">${u.desc}</div>
-      <div class="section"><strong>Контакты</strong><div style="color:#64748b;margin-top:6px">Город: ${u.city}<br>Телефон: +7 (727) 000-00-00<br>Email: info@${u.name.replace(/[^a-z0-9]/gi,'').toLowerCase()}.edu.kz</div></div>
-      <div class="section"><strong>Координаты</strong><div style="color:#64748b;margin-top:6px">lat: ${u.coords.lat}, lng: ${u.coords.lng}</div></div>
-      <div class="section"><strong>Стоимость обучения</strong><div style="color:#64748b;margin-top:6px">${u.cost.toLocaleString()} тг/год</div></div>
-      <div class="section"><strong>Гранты</strong><div style="color:#64748b;margin-top:6px">${u.grant ? 'Доступны гранты' : 'Гранты не предоставляются'}</div></div>
-    `;
-  }
+  tabContent.innerHTML = `
+    <div style="font-size:14px;color:#64748b">${u.desc}</div>
+
+    <div class="section">
+      <strong>Контакты</strong>
+      <div style="color:#64748b;margin-top:6px">
+        Город: ${u.city}<br>
+        Телефон: ${u.phone || "+7 (727) 000-00-00"}<br>
+        ${u.website ? `Сайт: <a href="${u.website}" target="_blank">${u.website}</a>` : ""}
+      </div>
+    </div>
+    
+    <div class="section">
+      <strong>Стоимость обучения</strong>
+      <div style="color:#64748b;margin-top:6px">
+        ${u.cost ? u.cost.toString().replace(/\D/g,'').toLocaleString() + " тг/год" : "Нет данных"}
+      </div>
+    </div>
+
+    <div class="section">
+      <strong>Гранты</strong>
+      <div style="color:#64748b;margin-top:6px">
+        ${u.grant ? "Доступны гранты" : "Гранты не предоставляются"}
+      </div>
+    </div>
+  `;
+}
 
   function renderPrograms(u){
     tabContent.innerHTML = `<div><strong>Академические программы</strong></div>`;
@@ -998,6 +1017,7 @@ promptInput.addEventListener("keypress", (e) => {
 </script>
 </body>
 </html>
+
 
 
 
