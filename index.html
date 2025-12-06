@@ -298,7 +298,7 @@
   "grant": true,
   "phone": "+77172706688",
   "website": "https://nu.edu.kz",
-  "tourUrl": "https://nu.edu.kz/ru/campus/campustour",
+  "tourUrl": "src="https://www.google.com/maps/embed?pb=!4v1765004069937!6m8!1m7!1s7JTqBdMEj66mZkppl5mfew!2m2!1d51.08994397906368!2d71.40115349796496!3f100.53087762734012!4f9.744171742922788!5f0.7820865974627469"
   "admissionUrl": "https://nu.edu.kz/admissions",
   "internationalUrl": "https://nu.edu.kz/ru/about/internationalcoop"
 },
@@ -313,8 +313,7 @@
   "grant": false,
   "phone": "+77273773330",
   "website": "https://farabi.university/",
-  "tourUrl": "",
-  "admissionUrl": "https://farabi.university/admission",
+  "tourUrl": "src="https://www.google.com/maps/embed?pb=!4v1765003688395!6m8!1m7!1sr14II-0khOlx9HdNj1oDyQ!2m2!1d43.22676668801573!2d76.92271915869962!3f208.51279556020143!4f-3.0046338990707397!5f0.7820865974627469" 
   "internationalUrl": "https://farabi.university/international"
 },
 {
@@ -328,8 +327,7 @@
   "grant": true,
   "phone": "+77172709500",
   "website": "https://enu.kz/",
-  "tourUrl": "",
-  "admissionUrl": "https://enu.kz/admission",
+  "tourUrl": "src="https://www.google.com/maps/embed?pb=!4v1765003826174!6m8!1m7!1saHwiSX7SPWzHkJDrjjYq9A!2m2!1d51.15736066924768!2d71.46681400257636!3f63.146177725771246!4f8.077035110262585!5f0.7820865974627469"
   "internationalUrl": "https://enu.kz/international"
 },
 {
@@ -343,8 +341,7 @@
   "grant": true,
   "phone": "+7727354242",
   "website": "kbtu.edu.kz",
-  "tourUrl": "",
-  "admissionUrl": "https://kbtu.edu.kz/ru/priemnaya-komissiya-bakalavriat",
+  "tourUrl": "src="https://www.google.com/maps/embed?pb=!4v1765003935895!6m8!1m7!1sJPIUEo6j3AVm3dG7lYj_0Q!2m2!1d43.25475548927886!2d76.94322574663333!3f0.25983544218971844!4f6.4087047306798155!5f0.7820865974627469"
   "internationalUrl": "https://kbtu.edu.kz/ru/internatsionalizatsiya/foreign-students"
 },
 {
@@ -893,6 +890,26 @@ function renderAdmission(u) {
       </div>`;
     return;
   }
+  const universitiesWithTourUrl = [
+    "Nazarbayev University",
+    "Казахско-британский технический университет",
+    "Евразийский национальный университет имени Л.Н. Гумилева"
+  ];
+
+  if (universitiesWithTourUrl.includes(u.name) && u.tourUrl) {
+    const tourUrlClean = u.tourUrl.replace(/^src="?|"?$/g, '');
+    tabContent.innerHTML = `
+      <div><strong>3D тур</strong></div>
+      <iframe 
+        width="100%" 
+        height="320" 
+        frameborder="0" 
+        style="border:0;border-radius:8px;margin-top:8px" 
+        src="${tourUrlClean}" 
+        allowfullscreen>
+      </iframe>`;
+    return;
+  }
   tabContent.innerHTML = `<div><strong>3D тур</strong></div>
     <iframe 
       width="100%" 
@@ -1017,17 +1034,3 @@ promptInput.addEventListener("keypress", (e) => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
