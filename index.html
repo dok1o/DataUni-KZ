@@ -839,13 +839,31 @@
     });
   }
 
-  function renderAdmission(u){
-    tabContent.innerHTML = `<div><strong>Приём и поступление</strong></div><div style="color:#64748b;margin-top:8px">${u.admission}</div><div style="margin-top:12px"><a class="btn" href="#" id="applyBtn">Как поступить</a></div>`;
-    document.getElementById('applyBtn').addEventListener('click', e=>{
-      e.preventDefault();
-      alert('Шаблон: Подать заявление через онлайн‑портал университета, подготовить сертификаты и портфолио.');
-    });
-  }
+function renderAdmission(u) {
+  tabContent.innerHTML = `
+    <div><strong>Приём и поступление</strong></div>
+
+    <div style="color:#64748b;margin-top:8px">
+      ${u.admission || "Информация скоро появится."}
+    </div>
+
+    <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+
+      ${u.website ? `
+        <a class="btn" href="${u.website}" target="_blank">
+          Перейти на сайт
+        </a>
+      ` : ""}
+
+      ${u.admissionUrl ? `
+        <a class="btn" href="${u.admissionUrl}" target="_blank">
+          Приём / Поступление
+        </a>
+      ` : ""}
+
+    </div>
+  `;
+}
 
   function renderTour(u){
   if (u.name === "Al‑Farabi Kazakh National University") {
@@ -980,6 +998,7 @@ promptInput.addEventListener("keypress", (e) => {
 </script>
 </body>
 </html>
+
 
 
 
